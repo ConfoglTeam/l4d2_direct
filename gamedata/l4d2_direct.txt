@@ -24,8 +24,8 @@
 			/* Offset into CDirector of CDirectorVersusMode */
 			"CDirectorVersusMode"
 			{
-				"windows" 	"1440"
-				"linux"		"1460"
+				"windows" 	"1444"
+				"linux"		"1464"
 			}
 			
 			/* CDirector Variable Offsets */
@@ -34,6 +34,26 @@
 			{
 				"windows"	"256"
 				"linux"		"256"
+			}
+			
+			/* CDirectorVersusMode Variable Offsets */
+			
+			"CDirectorVersusMode::m_iCampaignScores"
+			{
+				"windows"	"8"
+				"linux"		"8"
+			}
+			
+			"CDirectorVersusMode::m_fTankSpawnFlowPercent"
+			{
+				"windows"	"40"
+				"linux"		"40"
+			}
+			
+			"CDirectorVersusMode::m_bTankThisRound"
+			{
+				"windows"	"56"
+				"linux"		"56"
 			}
 		}
 		

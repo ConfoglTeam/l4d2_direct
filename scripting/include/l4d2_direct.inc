@@ -35,6 +35,8 @@
 
 #include <sourcemod>
 
+/* L4D2_Direct internals */
+
 stock Handle:L4D2Direct_GetGameConf()
 {
 	static Handle:g_hGameConf_l4d2dir = INVALID_HANDLE;
@@ -45,7 +47,7 @@ stock Handle:L4D2Direct_GetGameConf()
 	return g_hGameConf_l4d2dir;
 }
 
-stock Address:L4D2Direct_GetCDirectorAddress()
+stock Address:L4D2Direct_GetCDirector()
 {
 	static Address:TheDirector = Address_Null;
 	if(TheDirector == Address_Null)
@@ -55,13 +57,66 @@ stock Address:L4D2Direct_GetCDirectorAddress()
 	return TheDirector;
 }
 
+stock Address:L4D2Direct_GetCDirectorVersusMode()
+{
+	static Address:pVersusModeDirector = Address_Null;
+	if(pVersusModeDirector == Address_Null)
+	{
+		pVersusModeDirector = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode");
+		pVersusModeDirector = Address:LoadFromAddress( pVersusModeDirector , NumberType_Int32 );
+	}
+	return pVersusModeDirector;
+}
+
+/* CDirector Variable access */
+
 stock L4D2Direct_GetTankCount()
 {
 	static Address:pTankCount = Address_Null;
 	if(pTankCount == Address_Null) 
 	{
-		pTankCount = L4D2Direct_GetCDirectorAddress() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankCount");
+		pTankCount = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankCount");
 	}
 	return LoadFromAddress( pTankCount , NumberType_Int32 );
 }
 
+/* CDirectorVersusMode Variable access */
+
+// teamNumber = 0 or 1
+stock L4D2DirectVS_GetCampaignScore( teamNumber )
+{
+	if(teamNumber < 0 || teamNumber > 1) return -1;
+	
+	static Address:pCampaignScores = Address_Null;
+	if(pCampaignScores == Address_Null)
+	{
+		pCampaignScores = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_iCampaignScores");
+	}
+	return LoadFromAddress( pCampaignScores + Address:(teamNumber * 4), NumberType_Int32 );
+}
+
+// roundNumber = 0 or 1
+stock Float:L4D2DirectVS_GetTankFlowPercent( roundNumber )
+{
+	if(roundNumber < 0 || roundNumber > 1) return -1.0;
+	
+	static Address:pTankFlowPercent = Address_Null;
+	if(pTankFlowPercent == Address_Null)
+	{
+		pTankFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fTankSpawnFlowPercent");
+	}
+	return Float:LoadFromAddress( pTankFlowPercent + Address:(roundNumber * 4) , NumberType_Int32 );
+}
+
+// Is there a tank spawn left to do this round? (or has it already been spawned)
+stock bool:L4D2DirectVS_TankSpawnThisRound( roundNumber )
+{
+	if(roundNumber < 0 || roundNumber > 1) return false;
+	
+	static Address:pTankSpawnThisRound = Address_Null;
+	if(pTankSpawnThisRound == Address_Null)
+	{
+		pTankSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bTankThisRound");
+	}
+	return bool:LoadFromAddress( pTankSpawnThisRound + Address:roundNumber , NumberType_Int8 );
+}

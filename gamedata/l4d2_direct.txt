@@ -1,0 +1,59 @@
+"Games"
+{
+	"left4dead2"
+	{
+		"Addresses"
+		{
+			"CDirector"
+			{
+				"windows"
+				{
+					"signature" "DirectorMusicBanks_OnRoundStart"				
+					"read" "8"					
+				}
+				"linux"
+				{
+					"signature" "TheDirector"
+				}
+				"read" "0"
+			}
+		}
+		
+		"Offsets"
+		{
+			/* Offset into CDirector of CDirectorVersusMode */
+			"CDirectorVersusMode"
+			{
+				"windows" 	"1440"
+				"linux"		"1460"
+			}
+			
+			/* CDirector Variable Offsets */
+			
+			"CDirector::m_iTankCount"
+			{
+				"windows"	"256"
+				"linux"		"256"
+			}
+		}
+		
+		"Signatures"
+		{
+			/* Used solely to get the offset for TheDirector */
+			"DirectorMusicBanks_OnRoundStart"
+			{
+				"library"	"server"
+				"windows"       "\x83\xEC\x14\x57\x8B\xF9\x8B\x0D\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x84\xC0\x0F\x2A\x2A\x2A\x2A\x2A\x53\x55\x6A\x24\xE8"
+				/* 83 EC 14 57 8B F9 8B 0D ? ? ? ? E8 ? ? ? ? 84 C0 0F ? ? ? ? ? 53 55 6A 24 E8 */
+			}
+
+			/* Find the Director/ZombieManager singleton classes */
+			
+			"TheDirector"
+			{
+				"library"	"server"
+				"linux"		"@TheDirector"
+			}
+		}	
+	}
+}

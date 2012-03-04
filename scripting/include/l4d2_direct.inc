@@ -34,136 +34,102 @@
 #define _l4d2_direct_included
 
 #include <sourcemod>
+#include <l4d2d_internals>
 
-/* L4D2_Direct internals */
-
-stock Handle:L4D2Direct_GetGameConf()
-{
-	static Handle:g_hGameConf_l4d2dir = INVALID_HANDLE;
-	if(g_hGameConf_l4d2dir == INVALID_HANDLE)
-	{
-		g_hGameConf_l4d2dir = LoadGameConfigFile("l4d2_direct");
-	}
-	return g_hGameConf_l4d2dir;
-}
-
-stock Address:L4D2Direct_GetCDirector()
-{
-	static Address:TheDirector = Address_Null;
-	if(TheDirector == Address_Null)
-	{
-		TheDirector = GameConfGetAddress(L4D2Direct_GetGameConf(), "CDirector");
-	}
-	return TheDirector;
-}
-
-stock Address:L4D2Direct_GetCDirectorVersusMode()
-{
-	static Address:pVersusModeDirector = Address_Null;
-	if(pVersusModeDirector == Address_Null)
-	{
-		pVersusModeDirector = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode");
-		pVersusModeDirector = Address:LoadFromAddress( pVersusModeDirector , NumberType_Int32 );
-	}
-	return pVersusModeDirector;
-}
-
-stock Address:L4D2Direct_GetTerrorNavMesh()
-{
-	static Address:TheNavMesh = Address_Null;
-	if(TheNavMesh == Address_Null)
-	{
-		TheNavMesh = GameConfGetAddress(L4D2Direct_GetGameConf(), "TerrorNavMesh");
-	}
-	return TheNavMesh;
-}
+#define CLAMP(%0,%1,%2) (((%0) < (%1)) ? (%1) : (((%0) > (%2)) ? (%2) : (%0)))
 
 /* CDirector Variable access */
 
 stock L4D2Direct_GetTankCount()
 {
-	static Address:pTankCount = Address_Null;
-	if(pTankCount == Address_Null) 
-	{
-		pTankCount = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankCount");
-	}
-	return LoadFromAddress( pTankCount , NumberType_Int32 );
+	return LoadFromAddress( L4D2Direct_GetTankCountAddr() , NumberType_Int32 );
 }
 
 /* CDirectorVersusMode Variable access */
 
 // teamNumber = 0 or 1
-stock L4D2DirectVS_GetCampaignScore( teamNumber )
+stock L4D2Direct_GetVSCampaignScore( teamNumber )
 {
 	if(teamNumber < 0 || teamNumber > 1) return -1;
-	
-	static Address:pCampaignScores = Address_Null;
-	if(pCampaignScores == Address_Null)
-	{
-		pCampaignScores = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_iCampaignScores");
-	}
-	return LoadFromAddress( pCampaignScores + Address:(teamNumber * 4), NumberType_Int32 );
+
+	return LoadFromAddress( L4D2Direct_GetVSCampaignScoresAddr() + Address:(teamNumber * 4), NumberType_Int32 );
+}
+
+stock L4D2Direct_SetVSCampaignScore( teamNumber , score )
+{
+	if(teamNumber < 0 || teamNumber > 1) return;
+
+	StoreToAddress( L4D2Direct_GetVSCampaignScoresAddr() + Address:(teamNumber * 4), score, NumberType_Int32 );
 }
 
 // roundNumber = 0 or 1
-stock Float:L4D2DirectVS_GetTankFlowPercent( roundNumber )
+stock Float:L4D2Direct_GetVSTankFlowPercent( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return -1.0;
 	
-	static Address:pTankFlowPercent = Address_Null;
-	if(pTankFlowPercent == Address_Null)
-	{
-		pTankFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fTankSpawnFlowPercent");
-	}
-	return Float:LoadFromAddress( pTankFlowPercent + Address:(roundNumber * 4) , NumberType_Int32 );
+	return Float:LoadFromAddress( L4D2Direct_GetVSTankFlowAddr() + Address:(roundNumber * 4) , NumberType_Int32 );
+}
+
+stock L4D2Direct_SetVSTankFlowPercent( roundNumber , Float:flow )
+{
+	if(roundNumber < 0 || roundNumber > 1) return;
+	
+	flow = CLAMP(flow,0.0,1.0);
+	
+	StoreToAddress( L4D2Direct_GetVSTankFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
 
 // Is there a tank spawn left to do this round? (or has it already been spawned)
-stock bool:L4D2DirectVS_TankSpawnThisRound( roundNumber )
+stock bool:L4D2Direct_GetVSTankToSpawnThisRound( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return false;
 	
-	static Address:pTankSpawnThisRound = Address_Null;
-	if(pTankSpawnThisRound == Address_Null)
-	{
-		pTankSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bTankThisRound");
-	}
-	return bool:LoadFromAddress( pTankSpawnThisRound + Address:roundNumber , NumberType_Int8 );
+	return bool:LoadFromAddress( L4D2Direct_GeVSTankToSpawnAddr() + Address:roundNumber , NumberType_Int8 );
+}
+
+stock L4D2Direct_SetVSTankToSpawnThisRound( roundNumber , bool:spawn )
+{
+	if(roundNumber < 0 || roundNumber > 1) return;
+	
+	StoreToAddress( L4D2Direct_GeVSTankToSpawnAddr() + Address:roundNumber , _:spawn, NumberType_Int8 );
 }
 
 // roundNumber = 0 or 1
-stock Float:L4D2DirectVS_GetWitchFlowPercent( roundNumber )
+stock Float:L4D2Direct_GetVSWitchFlowPercent( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return -1.0;
+
+	return Float:LoadFromAddress( L4D2Direct_GetVSWitchFlowAddr() + Address:(roundNumber * 4) , NumberType_Int32 );
+}
+
+stock L4D2Direct_SetVSWitchFlowPercent( roundNumber , Float:flow )
+{
+	if(roundNumber < 0 || roundNumber > 1) return;
+
+	flow = CLAMP(flow,0.0,1.0);
 	
-	static Address:pWitchFlowPercent = Address_Null;
-	if(pWitchFlowPercent == Address_Null)
-	{
-		pWitchFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fWitchSpawnFlowPercent");
-	}
-	return Float:LoadFromAddress( pWitchFlowPercent + Address:(roundNumber * 4) , NumberType_Int32 );
+	StoreToAddress( L4D2Direct_GetVSWitchFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
 
 // Is there a witch spawn left to do this round? (or has it already been spawned)
-stock bool:L4D2DirectVS_WitchSpawnThisRound( roundNumber )
+stock bool:L4D2Direct_GetVSWitchToSpawnThisRound( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return false;
 	
-	static Address:pWitchSpawnThisRound = Address_Null;
-	if(pWitchSpawnThisRound == Address_Null)
-	{
-		pWitchSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bWitchThisRound");
-	}
-	return bool:LoadFromAddress( pWitchSpawnThisRound + Address:roundNumber , NumberType_Int8 );
+	return bool:LoadFromAddress( L4D2Direct_GetVSWitchToSpawnAddr() + Address:roundNumber , NumberType_Int8 );
+}
+
+stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
+{
+	if(roundNumber < 0 || roundNumber > 1) return;
+	
+	StoreToAddress( L4D2Direct_GetVSWitchToSpawnAddr() + Address:roundNumber , _:spawn , NumberType_Int8 );
 }
 
 // Take a flow distance, divide by this value, and you get a flow %
 stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {
-	static Address:pMapMaxFlowDistance = Address_Null;
-	if(pMapMaxFlowDistance == Address_Null)
-	{
-		pMapMaxFlowDistance = L4D2Direct_GetTerrorNavMesh() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fMapMaxFlowDistance");
-	}
-	return Float:LoadFromAddress( pMapMaxFlowDistance , NumberType_Int32 );
+	return Float:LoadFromAddress( L4D2Direct_GetMapMaxFlowDistanceAddr() , NumberType_Int32 );
 }
+
+#undef CLAMP

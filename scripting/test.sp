@@ -19,5 +19,13 @@ public Action:addtest(client,args)
 		L4D2DirectVS_TankSpawnThisRound(1) ? "yes" : "no", 
 		L4D2DirectVS_GetTankFlowPercent(1), 
 		L4D2DirectVS_GetTankFlowPercent(1)*L4D2Direct_GetMapMaxFlowDistance());
+	ReplyToCommand(client, "Witch spawn[0]: %s %f %f", 
+		L4D2DirectVS_WitchSpawnThisRound(0) ? "yes" : "no", 
+		L4D2DirectVS_GetWitchFlowPercent(0), 
+		L4D2DirectVS_GetWitchFlowPercent(0)*L4D2Direct_GetMapMaxFlowDistance());
+	ReplyToCommand(client, "Witch spawn[1]: %s %f %f", 
+		L4D2DirectVS_WitchSpawnThisRound(1) ? "yes" : "no", 
+		L4D2DirectVS_GetWitchFlowPercent(1), 
+		L4D2DirectVS_GetWitchFlowPercent(1)*L4D2Direct_GetMapMaxFlowDistance());
 	return Plugin_Handled;
 }

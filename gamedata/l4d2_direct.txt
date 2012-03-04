@@ -63,12 +63,24 @@
 				"linux"		"40"
 			}
 			
+			"CDirectorVersusMode::m_fWitchSpawnFlowPercent"
+			{
+				"windows"	"48"
+				"linux"		"48"
+			}
+
 			"CDirectorVersusMode::m_bTankThisRound"
 			{
 				"windows"	"56"
 				"linux"		"56"
 			}
 			
+			"CDirectorVersusMode::m_bWitchThisRound"
+			{
+				"windows"	"58"
+				"linux"		"58"
+			}
+
 			/* TerrorNavMesh Offsets */
 			
 			"TerrorNavMesh::m_fMapMaxFlowDistance"

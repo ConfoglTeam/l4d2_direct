@@ -14,10 +14,10 @@ public Action:addtest(client,args)
 	ReplyToCommand(client, "Tank spawn[0]: %s %f %f", 
 		L4D2DirectVS_TankSpawnThisRound(0) ? "yes" : "no", 
 		L4D2DirectVS_GetTankFlowPercent(0), 
-		L4D2DirectVS_GetTankFlowPercent(0)*L4D2Direct_GetFlowDistancePerPercent());
+		L4D2DirectVS_GetTankFlowPercent(0)*L4D2Direct_GetMapMaxFlowDistance());
 	ReplyToCommand(client, "Tank spawn[1]: %s %f %f", 
 		L4D2DirectVS_TankSpawnThisRound(1) ? "yes" : "no", 
 		L4D2DirectVS_GetTankFlowPercent(1), 
-		L4D2DirectVS_GetTankFlowPercent(0)*L4D2Direct_GetFlowDistancePerPercent());
+		L4D2DirectVS_GetTankFlowPercent(1)*L4D2Direct_GetMapMaxFlowDistance());
 	return Plugin_Handled;
 }

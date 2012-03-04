@@ -71,7 +71,7 @@
 			
 			/* TerrorNavMesh Offsets */
 			
-			"TerrorNavMesh::m_fFlowDistancePerPercent"
+			"TerrorNavMesh::m_fMapMaxFlowDistance"
 			{
 				"windows"	"1528"
 				"linux"		"1524"

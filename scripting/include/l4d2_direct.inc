@@ -132,12 +132,12 @@ stock bool:L4D2DirectVS_TankSpawnThisRound( roundNumber )
 }
 
 // Take a flow distance, divide by this value, and you get a flow %
-stock Float:L4D2Direct_GetFlowDistancePerPercent()
+stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {
-	static Address:pFlowDistancePerPercent = Address_Null;
-	if(pFlowDistancePerPercent == Address_Null)
+	static Address:pMapMaxFlowDistance = Address_Null;
+	if(pMapMaxFlowDistance == Address_Null)
 	{
-		pFlowDistancePerPercent = L4D2Direct_GetTerrorNavMesh() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fFlowDistancePerPercent");
+		pMapMaxFlowDistance = L4D2Direct_GetTerrorNavMesh() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fMapMaxFlowDistance");
 	}
-	return Float:LoadFromAddress( pFlowDistancePerPercent , NumberType_Int32 );
+	return Float:LoadFromAddress( pMapMaxFlowDistance , NumberType_Int32 );
 }

@@ -131,6 +131,32 @@ stock bool:L4D2DirectVS_TankSpawnThisRound( roundNumber )
 	return bool:LoadFromAddress( pTankSpawnThisRound + Address:roundNumber , NumberType_Int8 );
 }
 
+// roundNumber = 0 or 1
+stock Float:L4D2DirectVS_GetWitchFlowPercent( roundNumber )
+{
+	if(roundNumber < 0 || roundNumber > 1) return -1.0;
+	
+	static Address:pWitchFlowPercent = Address_Null;
+	if(pWitchFlowPercent == Address_Null)
+	{
+		pWitchFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fWitchSpawnFlowPercent");
+	}
+	return Float:LoadFromAddress( pWitchFlowPercent + Address:(roundNumber * 4) , NumberType_Int32 );
+}
+
+// Is there a witch spawn left to do this round? (or has it already been spawned)
+stock bool:L4D2DirectVS_WitchSpawnThisRound( roundNumber )
+{
+	if(roundNumber < 0 || roundNumber > 1) return false;
+	
+	static Address:pWitchSpawnThisRound = Address_Null;
+	if(pWitchSpawnThisRound == Address_Null)
+	{
+		pWitchSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bWitchThisRound");
+	}
+	return bool:LoadFromAddress( pWitchSpawnThisRound + Address:roundNumber , NumberType_Int8 );
+}
+
 // Take a flow distance, divide by this value, and you get a flow %
 stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {

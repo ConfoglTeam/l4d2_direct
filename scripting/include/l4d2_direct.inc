@@ -68,6 +68,16 @@ stock Address:L4D2Direct_GetCDirectorVersusMode()
 	return pVersusModeDirector;
 }
 
+stock Address:L4D2Direct_GetTerrorNavMesh()
+{
+	static Address:TheNavMesh = Address_Null;
+	if(TheNavMesh == Address_Null)
+	{
+		TheNavMesh = GameConfGetAddress(L4D2Direct_GetGameConf(), "TerrorNavMesh");
+	}
+	return TheNavMesh;
+}
+
 /* CDirector Variable access */
 
 stock L4D2Direct_GetTankCount()
@@ -119,4 +129,15 @@ stock bool:L4D2DirectVS_TankSpawnThisRound( roundNumber )
 		pTankSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bTankThisRound");
 	}
 	return bool:LoadFromAddress( pTankSpawnThisRound + Address:roundNumber , NumberType_Int8 );
+}
+
+// Take a flow distance, divide by this value, and you get a flow %
+stock Float:L4D2Direct_GetFlowDistancePerPercent()
+{
+	static Address:pFlowDistancePerPercent = Address_Null;
+	if(pFlowDistancePerPercent == Address_Null)
+	{
+		pFlowDistancePerPercent = L4D2Direct_GetTerrorNavMesh() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fFlowDistancePerPercent");
+	}
+	return Float:LoadFromAddress( pFlowDistancePerPercent , NumberType_Int32 );
 }

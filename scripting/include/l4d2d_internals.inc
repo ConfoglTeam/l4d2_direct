@@ -83,7 +83,9 @@ stock Address:L4D2Direct_GetTankCountAddr()
 	static Address:pTankCount = Address_Null;
 	if(pTankCount == Address_Null) 
 	{
-		pTankCount = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankCount");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankCount");
+		if(offs == -1) return Address_Null;
+		pTankCount = L4D2Direct_GetCDirector() + Address:offs;
 	}
 	return pTankCount
 }
@@ -93,7 +95,9 @@ stock Address:L4D2Direct_GetVSCampaignScoresAddr()
 	static Address:pCampaignScores = Address_Null;
 	if(pCampaignScores == Address_Null)
 	{
-		pCampaignScores = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_iCampaignScores");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_iCampaignScores");
+		if(offs == -1) return Address_Null;
+		pCampaignScores = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
 	}
 	return pCampaignScores;
 }
@@ -103,7 +107,9 @@ stock Address:L4D2Direct_GetVSTankFlowAddr()
 	static Address:pTankFlowPercent = Address_Null;
 	if(pTankFlowPercent == Address_Null)
 	{
-		pTankFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fTankSpawnFlowPercent");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fTankSpawnFlowPercent");
+		if(offs == -1) return Address_Null;
+		pTankFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
 	}
 	return pTankFlowPercent;
 }
@@ -113,7 +119,9 @@ stock Address:L4D2Direct_GeVSTankToSpawnAddr()
 	static Address:pTankSpawnThisRound = Address_Null;
 	if(pTankSpawnThisRound == Address_Null)
 	{
-		pTankSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bTankThisRound");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bTankThisRound");
+		if(offs == -1) return Address_Null;
+		pTankSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
 	}
 	return pTankSpawnThisRound;
 }
@@ -123,7 +131,9 @@ stock Address:L4D2Direct_GetVSWitchFlowAddr()
 	static Address:pWitchFlowPercent = Address_Null;
 	if(pWitchFlowPercent == Address_Null)
 	{
-		pWitchFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fWitchSpawnFlowPercent");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_fWitchSpawnFlowPercent");
+		if(offs == -1) return Address_Null;
+		pWitchFlowPercent = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
 	}
 	return pWitchFlowPercent;
 }
@@ -133,7 +143,9 @@ stock Address:L4D2Direct_GetVSWitchToSpawnAddr()
 	static Address:pWitchSpawnThisRound = Address_Null;
 	if(pWitchSpawnThisRound == Address_Null)
 	{
-		pWitchSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bWitchThisRound");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::m_bWitchThisRound");
+		if(offs == -1) return Address_Null;
+		pWitchSpawnThisRound = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
 	}
 	return pWitchSpawnThisRound;
 }
@@ -143,7 +155,9 @@ stock Address:L4D2Direct_GetMapMaxFlowDistanceAddr()
 	static Address:pMapMaxFlowDistance = Address_Null;
 	if(pMapMaxFlowDistance == Address_Null)
 	{
-		pMapMaxFlowDistance = L4D2Direct_GetTerrorNavMesh() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fMapMaxFlowDistance");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavMesh::m_fMapMaxFlowDistance");
+		if(offs == -1) return Address_Null;
+		pMapMaxFlowDistance = L4D2Direct_GetTerrorNavMesh() + Address:offs;
 	}
 	return pMapMaxFlowDistance;
 }

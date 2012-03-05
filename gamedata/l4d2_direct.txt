@@ -34,11 +34,60 @@
 		
 		"Offsets"
 		{
-			/* Offset into CDirector of CDirectorVersusMode */
+			/* Offsets into CDirector of other CDirector class pointers */
+
+			"CDirectorTacticalServices"
+			{
+				"windows"	"1424"
+				"linux"		"1444"
+			}
+
+			"CDirectorItemManager"
+			{
+				"windows"	"1428"
+				"linux"		"1448"
+			}
+
+			"CDirectorMusicBanks"
+			{
+				"windows"	"1432"
+				"linux"		"1452"
+			}
+
+			"CDirectorSessionManager"
+			{
+				"windows"	"1436"
+				"linux"		"1456"
+			}
+
+			"CDirectorScriptedEventManager"
+			{
+				"windows"	"1440"
+				"linux"		"1460"
+			}
+
 			"CDirectorVersusMode"
 			{
 				"windows" 	"1444"
 				"linux"		"1464"
+			}
+
+			"CDirectorSurvivalMode"
+			{
+				"windows"	"1448"
+				"linux"		"1468"
+			}
+
+			"CDirectorScavengeMode"
+			{
+				"windows"	"1452"
+				"linux"		"1472"
+			}
+
+			"CDirectorChallengeMode"
+			{
+				"windows"	"1464"
+				"linux"		"1484"
 			}
 			
 			/* CDirector Variable Offsets */
@@ -48,9 +97,70 @@
 				"windows"	"256"
 				"linux"		"256"
 			}
+
+			"CDirector::m_fTankFlowDistance"
+			{
+				"windows"	"260"
+				"linux"		"260"
+			}
+
+			"CDirector::MobSpawnTimer"
+			{
+				"windows"	"468"
+				"linux"		"468"
+			}
+
+			"CDirector::ClassDeathTimers"
+			{
+				"windows"	"500"
+				"linux"		"500"
+			}
+
+			"CDirector::ClassSpawnTimers"
+			{
+				"windows"	"564"
+				"linux"		"564"
+			}
+
+			"CDirector::m_fMobSpawnSize"
+			{
+				"windows"	"712"
+				"linux"		"712"
+			}
+
+			"CDirector::m_bIsFirstRoundFinished"
+			{
+				"windows"	"1121"
+				"linux"		"1121"
+			}
+
+			"CDirector::m_bIsSecondroundFinished"
+			{
+				"windows"	"1122"
+				"linux"		"1122"
+			}
 			
 			/* CDirectorVersusMode Variable Offsets */
 			
+			"CDirectorVersusMode::m_bVersusRoundInProgress"
+			{
+				"windows"	"4"
+				"linux"		"4"
+			}
+			
+			"CDirectorVersusMode::m_bFirstMap"
+			{
+				"windows"	"5"
+				"linux"		"5"
+			}
+			
+			"CDirectorVersusMode::m_bTransitioning"
+			{
+				"windows"	"6"
+				"linux"		"6"
+			}
+			
+
 			"CDirectorVersusMode::m_iCampaignScores"
 			{
 				"windows"	"8"
@@ -85,6 +195,74 @@
 			{
 				"windows"	"58"
 				"linux"		"58"
+			}
+
+			"CDirectorVersusMode::m_fFinaleTravelCompletionValue"
+			{
+				"windows"	"60"
+				"linux"		"60"
+			}
+
+			"CDirectorVersusMode::m_bInFinaleMap"
+			{
+				"windows"	"68"
+				"linux"		"68"
+			}
+
+			"CDirectorVersusMode::m_iNumMarkersReached"
+			{
+				"windows"	"72"
+				"linux"		"72"
+			}
+
+			"CDirectorVersusMode::m_iMarkersCount"
+			{
+				"windows"	"76"
+				"linux"		"76"
+			}
+
+			"CDirectorVersusMode::UpdateMarkersTimer"
+			{
+				"windows"	"80"
+				"linux"		"80"
+			}
+
+			/* CDirectorScavengeMode Offsets */
+
+			"CDirectorScavengeMode::m_bScavengeRoundInProgress"
+			{
+				"windows"	"8"
+				"linux"		"8"
+			}
+
+			"CDirectorScavengeMode::m_bAreTeamsSwapped"
+			{
+				"windows"	"10"
+				"linux"		"10"
+			}
+
+			"CDirectorScavengeMode::m_bInOvertime"
+			{
+				"windows"	"11"
+				"linux"		"11"
+			}
+
+			"CDirectorScavengeMode::m_bInOvertime2"
+			{
+				"windows"	"12"
+				"linux"		"12"
+			}
+
+			"CDirectorScavengeMode::RoundSetupTimer"
+			{
+				"windows"	"16"
+				"linux"		"16"
+			}
+			
+			"CDirectorScavengeMode::OvertimeGraceTimer"
+			{
+				"windows"	"28"
+				"linux"		"28"
 			}
 
 			/* TerrorNavMesh Offsets */

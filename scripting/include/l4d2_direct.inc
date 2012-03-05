@@ -35,6 +35,7 @@
 
 #include <sourcemod>
 #include <l4d2d_internals>
+#include <l4d2d_timers>
 
 #define CLAMP(%0,%1,%2) (((%0) < (%1)) ? (%1) : (((%0) > (%2)) ? (%2) : (%0)))
 

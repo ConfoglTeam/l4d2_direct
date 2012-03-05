@@ -57,6 +57,12 @@
 				"linux"		"8"
 			}
 			
+			"CDirectorVersusMode::VersusStartTimer"
+			{
+				"windows" 	"28"
+				"linux"		"28"
+			}
+
 			"CDirectorVersusMode::m_fTankSpawnFlowPercent"
 			{
 				"windows"	"40"

@@ -28,5 +28,9 @@ public Action:addtest(client,args)
 		L4D2Direct_GetVSWitchToSpawnThisRound(1) ? "yes" : "no", 
 		L4D2Direct_GetVSWitchFlowPercent(1), 
 		L4D2Direct_GetVSWitchFlowPercent(1)*L4D2Direct_GetMapMaxFlowDistance());
+
+	new CountdownTimer:VSStartTimer = L4D2Direct_GetVSStartTimer();
+	ReplyToCommand(client, "Saferoom opens in: %fs", CTimer_GetRemainingTime(VSStartTimer));
+
 	return Plugin_Handled;
 }

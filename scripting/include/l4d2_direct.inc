@@ -41,6 +41,15 @@
 
 /* CDirector Variable access */
 
+/**
+ * Get the current Tank count stored by the director.
+ * 
+ * @note This should work on any gamemode, and is a good check to see if there is a tank in play
+ *
+ *
+ * @return			The current number of tanks in play.
+ * @error			Director address not found.
+ */
 stock L4D2Direct_GetTankCount()
 {
 	return LoadFromAddress( L4D2Direct_GetTankCountAddr() , NumberType_Int32 );
@@ -48,7 +57,18 @@ stock L4D2Direct_GetTankCount()
 
 /* CDirectorVersusMode Variable access */
 
-// teamNumber = 0 or 1
+/**
+ * Reads the director's stored campaign score for a given team.
+ * 
+ * @note You can use the gamerules m_bAreTeamsFlipped property to figure out team numbers
+ * @note The campaign scores value is also stored in gamerules, however this is the "master" version.
+ * @note Campaign scores are only updated on round end, so this will not reflect current survivor distance score
+ *
+ *
+ * @param teamNumber	Team number to read campaign score of, 0 or 1.
+ * @return				Campaign score for the given team.
+ * @error				Director or Versus Director address not found.
+ */
 stock L4D2Direct_GetVSCampaignScore( teamNumber )
 {
 	if(teamNumber < 0 || teamNumber > 1) return -1;
@@ -56,6 +76,19 @@ stock L4D2Direct_GetVSCampaignScore( teamNumber )
 	return LoadFromAddress( L4D2Direct_GetVSCampaignScoresAddr() + Address:(teamNumber * 4), NumberType_Int32 );
 }
 
+/**
+ * Set the director's stored campaign score for a given team.
+ * 
+ * @note You can use the gamerules m_bAreTeamsFlipped property to figure out team numbers
+ * @note The campaign scores value is also stored in gamerules, however this is the "master" version.
+ * @note Keep in mind the current survivor team's distance/bonus score will be added at the end of a round
+ *
+ *
+ * @param teamNumber	Team number to set campaign score of, 0 or 1.
+ * @param score			Score to set for the team
+ * @error				Director or Versus Director address not found.
+ * @noreturn
+ */
 stock L4D2Direct_SetVSCampaignScore( teamNumber , score )
 {
 	if(teamNumber < 0 || teamNumber > 1) return;
@@ -63,7 +96,17 @@ stock L4D2Direct_SetVSCampaignScore( teamNumber , score )
 	StoreToAddress( L4D2Direct_GetVSCampaignScoresAddr() + Address:(teamNumber * 4), score, NumberType_Int32 );
 }
 
-// roundNumber = 0 or 1
+/**
+ * Reads the tank flow percent for a given round for versus mode
+ * 
+ * @note You should check GetVSTankToSpawnThisRound to find out if a tank is going to be spawned for this round.
+ * @note When the survivors reach this flow percent minus versus_boss_buffer converted to flow percent, a tank will spawn.
+ *
+ *
+ * @param roundNumber	Round number to read tank spawn flow percent of
+ * @return				Tank spawn flow percent for the given round
+ * @error				Director or Versus Director address not found.
+ */
 stock Float:L4D2Direct_GetVSTankFlowPercent( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return -1.0;
@@ -71,6 +114,18 @@ stock Float:L4D2Direct_GetVSTankFlowPercent( roundNumber )
 	return Float:LoadFromAddress( L4D2Direct_GetVSTankFlowAddr() + Address:(roundNumber * 4) , NumberType_Int32 );
 }
 
+/**
+ * Sets the tank flow percent for a given round for versus mode
+ * 
+ * @note You should check GetVSTankToSpawnThisRound to find out if there is still a tank to spawn this round.
+ * @note When the survivors reach this flow percent minus versus_boss_buffer converted to flow percent, a tank will spawn.
+ *
+ *
+ * @param roundNumber	Round number to set tank spawn flow percent of
+ * @param flow			Floating point percent of flow distance. It will be clamped to [0.0, 1.0]
+ * @noreturn
+ * @error				Director or Versus Director address not found.
+ */
 stock L4D2Direct_SetVSTankFlowPercent( roundNumber , Float:flow )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;
@@ -80,7 +135,13 @@ stock L4D2Direct_SetVSTankFlowPercent( roundNumber , Float:flow )
 	StoreToAddress( L4D2Direct_GetVSTankFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
 
-// Is there a tank spawn left to do this round? (or has it already been spawned)
+/**
+ * Is there going to be a tank spawned during the given round
+ *
+ * @param roundNumber	Round number to check for tank spawn on
+ * @return				True if there is still a tank to spawn for the given round, false if it has already been spawned or will not spawn.
+ * @error				Director or Versus Director address not found.
+ */
 stock bool:L4D2Direct_GetVSTankToSpawnThisRound( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return false;
@@ -88,6 +149,16 @@ stock bool:L4D2Direct_GetVSTankToSpawnThisRound( roundNumber )
 	return bool:LoadFromAddress( L4D2Direct_GeVSTankToSpawnAddr() + Address:roundNumber , NumberType_Int8 );
 }
 
+/**
+ * Tell the director whether or not to spawn a(nother) flow distance-based tank for this round.
+ *
+ * @note If you set this to true after a flow-distance-based tank has been spawned, this can trigger another tank to be spawned based on flow distance
+ *
+ * @param roundNumber	Round number to set a tank spawn on
+ * @param spawn			Whether or not to spawn a flow-distance-based tank for this round.
+ * @noreturn
+ * @error				Director or Versus Director address not found.
+ */
 stock L4D2Direct_SetVSTankToSpawnThisRound( roundNumber , bool:spawn )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;

@@ -40,7 +40,8 @@
 /* These class numbers are the same ones used internally in L4D2 */
 enum SIClass
 {
-	SI_Smoker=0,
+	SI_None=0,
+	SI_Smoker=1,
 	SI_Boomer,
 	SI_Hunter,
 	SI_Spitter,
@@ -51,7 +52,7 @@ enum SIClass
 };
 
 stock const String:g_sSIClassNames[SIClass][] = 
-{	"Smoker", "Boomer", "Hunter", "Spitter", "Jockey", "Charger", "Witch", "Tank" };
+{	"", "Smoker", "Boomer", "Hunter", "Spitter", "Jockey", "Charger", "Witch", "Tank" };
 
 /* CDirector Variable access */
 
@@ -110,7 +111,7 @@ stock IntervalTimer:L4D2Direct_GetSIClassDeathTimer(SIClass:class)
 		if(offs == -1) return ITimer_Null;
 		pSIDeathTimers = L4D2Direct_GetCDirector() + Address:offs;
 	}
-	return IntervalTimer:(_:pSIDeathTimers + (_:class * SIZEOF_ITIMER));
+	return IntervalTimer:(_:pSIDeathTimers + ((_:class - 1) * SIZEOF_ITIMER));
 }
 
 /* CDirectorVersusMode Variable access */

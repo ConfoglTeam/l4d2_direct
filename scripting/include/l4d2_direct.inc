@@ -53,6 +53,27 @@ stock L4D2Direct_GetTankCount()
 	return LoadFromAddress( L4D2Direct_GetTankCountAddr() , NumberType_Int32 );
 }
 
+/**
+ * Get a reference to the CDirector natural mob spawn CountdownTimer
+ *
+ * @note This timer is used to control the spawning of natural hordes.
+ * @note This timer gets reset during unnatural hordes as well (boomer/car alarm hordes)
+ * @note Some scripted events will effectively "take over", by reducing the mob spawn time.
+ *
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ */
+stock CountdownTimer:L4D2Direct_GetMobSpawnTimer()
+{
+	static Address:pMobSpawnTimer = Address_Null;
+	if(pMobSpawnTimer == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::MobSpawnTimer");
+		if(offs == -1) return CTimer_Null;
+		pMobSpawnTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+	}
+	return CountdownTimer:pMobSpawnTimer;
+}
+
 /* CDirectorVersusMode Variable access */
 
 /**
@@ -234,6 +255,7 @@ stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
  * Get a reference to the VersusStart CountdownTimer
  *
  * @note This timer controls when the saferoom door will open and PZ spawning is enabled
+ * @note The default duration for this timer is controlled by cvar: versus_force_start_time
  *
  * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
  */
@@ -248,6 +270,50 @@ stock CountdownTimer:L4D2Direct_GetVSStartTimer()
 	}
 	return CountdownTimer:pVSStartTimer;
 }
+
+/* CDirectorScavengeMode Variable access */
+
+/**
+ * Get a reference to the Scavenge Round Setup CountdownTimer
+ *
+ * @note This timer controls when the scavenge "warmup" time ends and PZ/game timers start.
+ * @note The default duration for this timer is controlled by cvar: scavenge_round_setup_time
+ *
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ */
+stock CountdownTimer:L4D2Direct_GetScavengeRoundSetupTimer()
+{
+	static Address:pRoundSetupTimer = Address_Null;
+	if(pRoundSetupTimer == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorScavengeMode::RoundSetupTimer");
+		if(offs == -1) return CTimer_Null;
+		pRoundSetupTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+	}
+	return CountdownTimer:pRoundSetupTimer;
+}
+
+/**
+ * Get a reference to the Scavenge Overtime Grace CountdownTimer
+ *
+ * @note This timer keeps track of how long survivors have gone without holding a can during overtime.
+ * @note The default duration for this timer is controlled by cvar: scavenge_overtime_grace_time
+ *
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ */
+stock CountdownTimer:L4D2Direct_GetScavengeOvertimeGraceTimer()
+{
+	static Address:pOvertimeGraceTimer = Address_Null;
+	if(pOvertimeGraceTimer == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorScavengeMode::OvertimeGraceTimer");
+		if(offs == -1) return CTimer_Null;
+		pOvertimeGraceTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+	}
+	return CountdownTimer:pOvertimeGraceTimer;
+}
+
+/* TerrorNavMesh Variable access */
 
 /**
  * Get the max flow distance (in flow units) for the current map.

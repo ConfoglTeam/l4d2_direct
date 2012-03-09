@@ -279,7 +279,7 @@
 			"sizeof_CDirector"
 			{
 				"windows"	"1460"
-				"linux"		"1480
+				"linux"		"1480"
 			}
 			
 			/* Google: sizeof empty */

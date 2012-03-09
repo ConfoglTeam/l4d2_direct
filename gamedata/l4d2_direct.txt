@@ -272,6 +272,76 @@
 				"windows"	"1528"
 				"linux"		"1524"
 			}
+			
+			/* Structure Sizes */
+			/* Look for InitGameSystems(), NavMeshFactory(), and CDirector::CDirector() to find sizes */
+			
+			"sizeof_CDirector"
+			{
+				"windows"	"1460"
+				"linux"		"1480
+			}
+			
+			/* Google: sizeof empty */
+			"sizeof_CDirectorTacticalServices"
+			{
+				"windows"	"1"
+				"linux"		"1"
+			}
+			
+			"sizeof_CDirectorItemManager"
+			{
+				"windows"	"1128"
+				"linux"		"1128"
+			}
+			
+			"sizeof_CDirectorMusicBanks"
+			{
+				"windows"	"92"
+				"linux"		"92"
+			}
+			
+			"sizeof_CDirectorSessionManager"
+			{
+				"windows"	"76"
+				"linux"		"76"
+			}
+			
+			"sizeof_CDirectorScriptedEventManager"
+			{
+				"windows"	"156"
+				"linux"		"156"
+			}
+			
+			"sizeof_CDirectorVersusMode"
+			{
+				"windows"	"92"
+				"linux"		"92"
+			}
+			
+			"sizeof_CDirectorSurvivalMode"
+			{
+				"windows"	"160"
+				"linux"		"160"
+			}
+			
+			"sizeof_CDirectorScavengeMode"
+			{
+				"windows"	"104"
+				"linux"		"104"
+			}
+			
+			"sizeof_CDirectorChallengeMode"
+			{
+				"windows"	"8"
+				"linux"		"8"
+			}
+			
+			"sizeof_TerrorNavMesh"
+			{
+				"windows"	"1748"
+				"linux"		"1744"
+			}
 		}
 		
 		"Signatures"

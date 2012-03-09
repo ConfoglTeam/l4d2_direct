@@ -50,27 +50,6 @@ enum IntervalTimer
 	ITimer_Null = 0 /**< Invalid Timer when lookup fails */
 };
 
-/* Timer addresses */
-
-/**
- * Get a reference to the VersusStart CountdownTimer
- *
- * @note This timer controls when the saferoom door will open and PZ spawning is enabled
- *
- * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
- */
-stock CountdownTimer:L4D2Direct_GetVSStartTimer()
-{
-	static Address:pVSStartTimer = Address_Null;
-	if(pVSStartTimer == Address_Null)
-	{
-		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::VersusStartTimer");
-		if(offs == -1) return CTimer_Null;
-		pVSStartTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
-	}
-	return CountdownTimer:pVSStartTimer;
-}
-
 /* CountdownTimer funcs */
 
 /**

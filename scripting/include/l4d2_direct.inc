@@ -37,8 +37,6 @@
 #include <l4d2d_internals>
 #include <l4d2d_timers>
 
-#define CLAMP(%0,%1,%2) (((%0) < (%1)) ? (%1) : (((%0) > (%2)) ? (%2) : (%0)))
-
 /* CDirector Variable access */
 
 /**
@@ -122,15 +120,13 @@ stock Float:L4D2Direct_GetVSTankFlowPercent( roundNumber )
  *
  *
  * @param roundNumber	Round number to set tank spawn flow percent of
- * @param flow			Floating point percent of flow distance. It will be clamped to [0.0, 1.0]
+ * @param flow			Floating point percent of flow distance.
  * @noreturn
  * @error				Director or Versus Director address not found.
  */
 stock L4D2Direct_SetVSTankFlowPercent( roundNumber , Float:flow )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;
-	
-	flow = CLAMP(flow,0.0,1.0);
 	
 	StoreToAddress( L4D2Direct_GetVSTankFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
@@ -192,15 +188,13 @@ stock Float:L4D2Direct_GetVSWitchFlowPercent( roundNumber )
  *
  *
  * @param roundNumber	Round number to set witch spawn flow percent of
- * @param flow			Floating point percent of flow distance. It will be clamped to [0.0, 1.0]
+ * @param flow			Floating point percent of flow distance.
  * @noreturn
  * @error				Director or Versus Director address not found.
  */
 stock L4D2Direct_SetVSWitchFlowPercent( roundNumber , Float:flow )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;
-
-	flow = CLAMP(flow,0.0,1.0);
 	
 	StoreToAddress( L4D2Direct_GetVSWitchFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
@@ -237,6 +231,25 @@ stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
 }
 
 /**
+ * Get a reference to the VersusStart CountdownTimer
+ *
+ * @note This timer controls when the saferoom door will open and PZ spawning is enabled
+ *
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ */
+stock CountdownTimer:L4D2Direct_GetVSStartTimer()
+{
+	static Address:pVSStartTimer = Address_Null;
+	if(pVSStartTimer == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode::VersusStartTimer");
+		if(offs == -1) return CTimer_Null;
+		pVSStartTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+	}
+	return CountdownTimer:pVSStartTimer;
+}
+
+/**
  * Get the max flow distance (in flow units) for the current map.
  *
  * @note The flow distance for each map is generated as it is loaded, and it can change slightly (a few hundred units) with each load.
@@ -249,5 +262,3 @@ stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {
 	return Float:LoadFromAddress( L4D2Direct_GetMapMaxFlowDistanceAddr() , NumberType_Int32 );
 }
-
-#undef CLAMP

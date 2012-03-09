@@ -7,4 +7,13 @@ Previously this sort of work was done through left4downtown2, but since Sourcemo
 
 Ideally, l4d2_direct will provide a simple API for reading and writing to the various CDirector classes, ZombieManager, TerrorNavMesh, and other useful classes.
 
+
+Update!
+=======
+
+As of March 9 2012 this project aims to just be a massive hunk of includes for l4d2 apparently.
+
+
+License
+=======
 Code is released under GPLv3 as with every other SourcePawn project.

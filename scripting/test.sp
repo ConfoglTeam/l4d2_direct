@@ -25,6 +25,7 @@ public OnPluginStart()
 	RegConsoleCmd("sm_addtest", addtest);
 	RegConsoleCmd("sm_timertest", timertest);
 	RegConsoleCmd("sm_sitimers", sitimers);
+	RegConsoleCmd("sm_dumpglobals", dumpglobals);
 }
 
 public Action:addtest(client,args)
@@ -104,4 +105,55 @@ public Action:sitimers(client, args)
 	}
 	
 	return Plugin_Handled;
+}
+
+public Action:dumpglobals(client, args)
+{
+	decl String:fnameBuf[64];
+	new Handle:curfile;
+	new len;
+	
+	Format(fnameBuf, sizeof(fnameBuf), "CDirector_%d.bin", GetTime());
+	curfile = OpenFile(fnameBuf, "wb");
+	len = GameConfGetOffset(L4D2Direct_GetGameConf(), "sizeof_CDirector");
+	DumpGlobalToFile(L4D2Direct_GetCDirector(), len, curfile);
+	CloseHandle(curfile);
+
+	Format(fnameBuf, sizeof(fnameBuf), "CDirectorVersusMode_%d.bin", GetTime());
+	curfile = OpenFile(fnameBuf, "wb");
+	len = GameConfGetOffset(L4D2Direct_GetGameConf(), "sizeof_CDirectorVersusMode");
+	DumpGlobalToFile(L4D2Direct_GetCDirectorVersusMode(), len, curfile);
+	CloseHandle(curfile);	
+
+	Format(fnameBuf, sizeof(fnameBuf), "CDirectorScavengeMode_%d.bin", GetTime());
+	curfile = OpenFile(fnameBuf, "wb");
+	len = GameConfGetOffset(L4D2Direct_GetGameConf(), "sizeof_CDirectorScavengeMode");
+	DumpGlobalToFile(L4D2Direct_GetCDirectorScavengeMode(), len, curfile);
+	CloseHandle(curfile);
+
+	Format(fnameBuf, sizeof(fnameBuf), "TerrorNavMesh_%d.bin", GetTime());
+	curfile = OpenFile(fnameBuf, "wb");
+	len = GameConfGetOffset(L4D2Direct_GetGameConf(), "sizeof_TerrorNavMesh");
+	DumpGlobalToFile(L4D2Direct_GetTerrorNavMesh(), len, curfile);
+	CloseHandle(curfile);
+
+	return Plugin_Handled;
+}
+
+stock bool:DumpGlobalToFile(Address:pGlobal, size, Handle:file)
+{
+	new buffer[size];
+	DumpGlobal(pGlobal, buffer, size);
+	return WriteFile(file, buffer, size, 1);
+}
+
+stock DumpGlobal(Address:pGlobal, buffer[], size)
+{
+	new Address:pEnd = pGlobal + Address:size;
+	new Address:pCur = pGlobal;
+	new loc=0;
+	while(pCur < pEnd)
+	{
+		buffer[loc++] = LoadFromAddress(pCur, NumberType_Int8);
+	}
 }

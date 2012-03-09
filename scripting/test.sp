@@ -154,6 +154,6 @@ stock DumpGlobal(Address:pGlobal, buffer[], size)
 	new loc=0;
 	while(pCur < pEnd)
 	{
-		buffer[loc++] = LoadFromAddress(pCur, NumberType_Int8);
+		buffer[loc++] = LoadFromAddress(pCur++, NumberType_Int8);
 	}
 }

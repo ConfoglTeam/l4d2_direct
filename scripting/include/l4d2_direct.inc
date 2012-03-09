@@ -37,6 +37,22 @@
 #include <l4d2d_internals>
 #include <l4d2d_timers>
 
+/* These class numbers are the same ones used internally in L4D2 */
+enum SIClass
+{
+	SI_Smoker=0,
+	SI_Boomer,
+	SI_Hunter,
+	SI_Spitter,
+	SI_Jockey,
+	SI_Charger,
+	SI_Witch,
+	SI_Tank
+};
+
+stock const String:g_sSIClassNames[SIClass][] = 
+{	"Smoker", "Boomer", "Hunter", "Spitter", "Jockey", "Charger", "Witch", "Tank" };
+
 /* CDirector Variable access */
 
 /**
@@ -69,9 +85,32 @@ stock CountdownTimer:L4D2Direct_GetMobSpawnTimer()
 	{
 		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::MobSpawnTimer");
 		if(offs == -1) return CTimer_Null;
-		pMobSpawnTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+		pMobSpawnTimer = L4D2Direct_GetCDirector() + Address:offs;
 	}
 	return CountdownTimer:pMobSpawnTimer;
+}
+
+/**
+ * Get a reference to a IntervalTimer that counts up from the last death of a given SI class
+ *
+ * @note The main place I've seen these timers used is in the SI spawning algorithms (CDirector::UpdateSpecialSpawns)
+ * @note This timer gets checked against SI respawn interval for different gamemodes, some of which are cvar controlled (e.g. versus_special_respawn_interval)
+ *
+ * @param class		SI Class to retrieve timer for
+ * @return			IntervalTimer reference to the timer, or ITimer_Null on lookup failure or bad class.
+ */
+stock IntervalTimer:L4D2Direct_GetSIClassDeathTimer(SIClass:class)
+{
+	if(class < SI_Smoker || class > SI_Charger) return ITimer_Null;
+	
+	static Address:pSIDeathTimers = Address_Null;
+	if(pSIDeathTimers == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::ClassDeathTimers");
+		if(offs == -1) return ITimer_Null;
+		pSIDeathTimers = L4D2Direct_GetCDirector() + Address:offs;
+	}
+	return IntervalTimer:(_:pSIDeathTimers + (_:class * SIZEOF_ITIMER));
 }
 
 /* CDirectorVersusMode Variable access */
@@ -258,6 +297,7 @@ stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
  * @note The default duration for this timer is controlled by cvar: versus_force_start_time
  *
  * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ * @error				Director address not found.
  */
 stock CountdownTimer:L4D2Direct_GetVSStartTimer()
 {
@@ -280,6 +320,7 @@ stock CountdownTimer:L4D2Direct_GetVSStartTimer()
  * @note The default duration for this timer is controlled by cvar: scavenge_round_setup_time
  *
  * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ * @error				Director address not found.
  */
 stock CountdownTimer:L4D2Direct_GetScavengeRoundSetupTimer()
 {
@@ -288,7 +329,7 @@ stock CountdownTimer:L4D2Direct_GetScavengeRoundSetupTimer()
 	{
 		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorScavengeMode::RoundSetupTimer");
 		if(offs == -1) return CTimer_Null;
-		pRoundSetupTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+		pRoundSetupTimer = L4D2Direct_GetCDirectorScavengeMode() + Address:offs;
 	}
 	return CountdownTimer:pRoundSetupTimer;
 }
@@ -300,6 +341,7 @@ stock CountdownTimer:L4D2Direct_GetScavengeRoundSetupTimer()
  * @note The default duration for this timer is controlled by cvar: scavenge_overtime_grace_time
  *
  * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ * @error				Director address not found.
  */
 stock CountdownTimer:L4D2Direct_GetScavengeOvertimeGraceTimer()
 {
@@ -308,7 +350,7 @@ stock CountdownTimer:L4D2Direct_GetScavengeOvertimeGraceTimer()
 	{
 		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorScavengeMode::OvertimeGraceTimer");
 		if(offs == -1) return CTimer_Null;
-		pOvertimeGraceTimer = L4D2Direct_GetCDirectorVersusMode() + Address:offs;
+		pOvertimeGraceTimer = L4D2Direct_GetCDirectorScavengeMode() + Address:offs;
 	}
 	return CountdownTimer:pOvertimeGraceTimer;
 }

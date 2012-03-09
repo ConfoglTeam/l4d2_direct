@@ -77,10 +77,30 @@ stock Address:L4D2Direct_GetCDirectorVersusMode()
 	static Address:pVersusModeDirector = Address_Null;
 	if(pVersusModeDirector == Address_Null)
 	{
-		pVersusModeDirector = L4D2Direct_GetCDirector() + Address:GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode");
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorVersusMode");
+		if(offs == -1) return Address_Null;
+		pVersusModeDirector = L4D2Direct_GetCDirector() + Address:offs;
 		pVersusModeDirector = Address:LoadFromAddress( pVersusModeDirector , NumberType_Int32 );
 	}
 	return pVersusModeDirector;
+}
+
+/**
+ * Get the address of the global CDirectorScavengeMode instance (TheDirector->ScavengeModePtr)
+ *
+ * @return				Address of the global CDirectorScavengeMode, or Address_Null on failure.
+ */
+stock Address:L4D2Direct_GetCDirectorScavengeMode()
+{
+	static Address:pScavengeModeDirector = Address_Null;
+	if(pScavengeModeDirector == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirectorScavengeMode");
+		if(offs == -1) return Address_Null;
+		pScavengeModeDirector = L4D2Direct_GetCDirector() + Address:offs;
+		pScavengeModeDirector = Address:LoadFromAddress( pScavengeModeDirector , NumberType_Int32 );
+	}
+	return pScavengeModeDirector;
 }
 
 /**

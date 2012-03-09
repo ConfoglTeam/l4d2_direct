@@ -39,6 +39,8 @@
 #define CTIMER_DURATION_OFFSET (Address:4)
 #define CTIMER_TIMESTAMP_OFFSET (Address:8)
 #define ITIMER_TIMESTAMP_OFFSET (Address:4)
+#define SIZEOF_ITIMER 8
+#define SIZEOF_CTIMER 12
 
 enum CountdownTimer
 {
@@ -57,6 +59,7 @@ enum IntervalTimer
  *
  * @param timer		CountdownTimer to reset
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock CTimer_Reset( CountdownTimer:timer )
 {
@@ -69,6 +72,7 @@ stock CTimer_Reset( CountdownTimer:timer )
  * @param timer		CountdownTimer to reset
  * @param duration	Duration for this CountdownTimer to use, in seconds
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock CTimer_Start( CountdownTimer:timer , Float:duration )
 {
@@ -81,6 +85,7 @@ stock CTimer_Start( CountdownTimer:timer , Float:duration )
  *
  * @param timer		CountdownTimer to Invalidate
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock CTimer_Invalidate( CountdownTimer:timer )
 {
@@ -92,6 +97,7 @@ stock CTimer_Invalidate( CountdownTimer:timer )
  *
  * @param timer		CountdownTimer to check
  * @return			True if it has started running, False if it is not (Invalidated)
+ * @error 			Invalid timer address
  */
 stock bool:CTimer_HasStarted( CountdownTimer:timer )
 {
@@ -103,6 +109,7 @@ stock bool:CTimer_HasStarted( CountdownTimer:timer )
  *
  * @param timer		CountdownTimer to check
  * @return			True if the timer's duration has passed since it started, false otherwise.
+ * @error 			Invalid timer address
  */
 stock bool:CTimer_IsElapsed( CountdownTimer:timer )
 {
@@ -114,6 +121,7 @@ stock bool:CTimer_IsElapsed( CountdownTimer:timer )
  *
  * @param timer		CountdownTimer to check
  * @return			Time since the CountdownTimer was last Started or Reset, in seconds.
+ * @error 			Invalid timer address
  */
 stock Float:CTimer_GetElapsedTime( CountdownTimer:timer )
 {
@@ -125,6 +133,7 @@ stock Float:CTimer_GetElapsedTime( CountdownTimer:timer )
  *
  * @param timer		CountdownTimer to check
  * @return			Time until the CountdownTimer is elapsed, in seconds.
+ * @error 			Invalid timer address
  */
 stock Float:CTimer_GetRemainingTime( CountdownTimer:timer )
 {
@@ -136,6 +145,7 @@ stock Float:CTimer_GetRemainingTime( CountdownTimer:timer )
  *
  * @param timer		CountdownTimer to check
  * @return			Countdown duration in seconds if timer is running, or 0.0 if timer is invalidated (not running)
+ * @error 			Invalid timer address
  */
 stock Float:CTimer_GetCountdownDuration( CountdownTimer:timer )
 {
@@ -149,6 +159,7 @@ stock Float:CTimer_GetCountdownDuration( CountdownTimer:timer )
  *
  * @param timer		IntervalTimer to reset
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock ITimer_Reset( IntervalTimer:timer )
 {
@@ -162,6 +173,7 @@ stock ITimer_Reset( IntervalTimer:timer )
  *
  * @param timer		IntervalTimer to start
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock ITimer_Start( IntervalTimer:timer )
 {
@@ -173,6 +185,7 @@ stock ITimer_Start( IntervalTimer:timer )
  *
  * @param timer		IntervalTimer to Invalidate
  * @noreturn
+ * @error 			Invalid timer address
  */
 stock ITimer_Invalidate( IntervalTimer:timer )
 {
@@ -184,6 +197,7 @@ stock ITimer_Invalidate( IntervalTimer:timer )
  *
  * @param timer		IntervalTimer to check
  * @return			True if the IntervalTimer is running, false if it is Invalidated
+ * @error 			Invalid timer address
  */
 stock bool:ITimer_HasStarted( IntervalTimer:timer )
 {
@@ -195,10 +209,11 @@ stock bool:ITimer_HasStarted( IntervalTimer:timer )
  *
  * @param timer		IntervalTimer to check
  * @return			Elapsed time of the IntervalTimer in seconds if it has started, or 99999.9 ("infinite") if it is Invalidated
+ * @error 			Invalid timer address
  */
 stock Float:ITimer_GetElapsedTime( IntervalTimer:timer )
 {
-	return ITimer_GetHasStarted( timer ) ? GetGameTime() - ITimer_GetTimestamp() : 99999.9;
+	return ITimer_HasStarted( timer ) ? GetGameTime() - ITimer_GetTimestamp(timer) : 99999.9;
 }
 
 /* Timer Internals */

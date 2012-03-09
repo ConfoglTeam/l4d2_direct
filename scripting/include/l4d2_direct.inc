@@ -36,6 +36,7 @@
 #include <sourcemod>
 #include <l4d2d_internals>
 #include <l4d2d_timers>
+#include <l4d2d_weapons>
 
 /* These class numbers are the same ones used internally in L4D2 */
 enum SIClass

@@ -166,7 +166,17 @@ stock L4D2Direct_SetVSTankToSpawnThisRound( roundNumber , bool:spawn )
 	StoreToAddress( L4D2Direct_GeVSTankToSpawnAddr() + Address:roundNumber , _:spawn, NumberType_Int8 );
 }
 
-// roundNumber = 0 or 1
+/**
+ * Reads the witch flow percent for a given round for versus mode
+ * 
+ * @note You should check GetVSWitchToSpawnThisRound to find out if a witch is going to be spawned for this round.
+ * @note When the survivors reach this flow percent minus versus_boss_buffer converted to flow percent, a witch will spawn.
+ *
+ *
+ * @param roundNumber	Round number to read witch spawn flow percent of
+ * @return				Witch spawn flow percent for the given round
+ * @error				Director or Versus Director address not found.
+ */
 stock Float:L4D2Direct_GetVSWitchFlowPercent( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return -1.0;
@@ -174,6 +184,18 @@ stock Float:L4D2Direct_GetVSWitchFlowPercent( roundNumber )
 	return Float:LoadFromAddress( L4D2Direct_GetVSWitchFlowAddr() + Address:(roundNumber * 4) , NumberType_Int32 );
 }
 
+/**
+ * Sets the witch flow percent for a given round for versus mode
+ * 
+ * @note You should check GetVSWitchToSpawnThisRound to find out if there is still a witch to spawn this round.
+ * @note When the survivors reach this flow percent minus versus_boss_buffer converted to flow percent, a witch will spawn.
+ *
+ *
+ * @param roundNumber	Round number to set witch spawn flow percent of
+ * @param flow			Floating point percent of flow distance. It will be clamped to [0.0, 1.0]
+ * @noreturn
+ * @error				Director or Versus Director address not found.
+ */
 stock L4D2Direct_SetVSWitchFlowPercent( roundNumber , Float:flow )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;
@@ -183,7 +205,13 @@ stock L4D2Direct_SetVSWitchFlowPercent( roundNumber , Float:flow )
 	StoreToAddress( L4D2Direct_GetVSWitchFlowAddr() + Address:(roundNumber * 4) , _:flow , NumberType_Int32 );
 }
 
-// Is there a witch spawn left to do this round? (or has it already been spawned)
+/**
+ * Is there going to be a witch spawned during the given round
+ *
+ * @param roundNumber	Round number to check for witch spawn on
+ * @return				True if there is still a witch to spawn for the given round, false if it has already been spawned or will not spawn.
+ * @error				Director or Versus Director address not found.
+ */
 stock bool:L4D2Direct_GetVSWitchToSpawnThisRound( roundNumber )
 {
 	if(roundNumber < 0 || roundNumber > 1) return false;
@@ -191,6 +219,16 @@ stock bool:L4D2Direct_GetVSWitchToSpawnThisRound( roundNumber )
 	return bool:LoadFromAddress( L4D2Direct_GetVSWitchToSpawnAddr() + Address:roundNumber , NumberType_Int8 );
 }
 
+/**
+ * Tell the director whether or not to spawn a(nother) flow distance-based witch for this round.
+ *
+ * @note If you set this to true after a flow-distance-based witch has been spawned, this can trigger another witch to be spawned based on flow distance
+ *
+ * @param roundNumber	Round number to set a witch spawn on
+ * @param spawn			Whether or not to spawn a flow-distance-based witch for this round.
+ * @noreturn
+ * @error				Director or Versus Director address not found.
+ */
 stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
 {
 	if(roundNumber < 0 || roundNumber > 1) return;
@@ -198,7 +236,15 @@ stock L4D2Direct_SetVSWitchToSpawnThisRound( roundNumber , bool:spawn )
 	StoreToAddress( L4D2Direct_GetVSWitchToSpawnAddr() + Address:roundNumber , _:spawn , NumberType_Int8 );
 }
 
-// Take a flow distance, divide by this value, and you get a flow %
+/**
+ * Get the max flow distance (in flow units) for the current map.
+ *
+ * @note The flow distance for each map is generated as it is loaded, and it can change slightly (a few hundred units) with each load.
+ * @note You can use this value to convert a flow distance to a flow percent, and vice versa.
+ *
+ * @return				Max flow distance for the current loaded map.
+ * @error				TerrorNavMesh address not found.
+ */
 stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {
 	return Float:LoadFromAddress( L4D2Direct_GetMapMaxFlowDistanceAddr() , NumberType_Int32 );

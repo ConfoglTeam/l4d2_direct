@@ -42,14 +42,23 @@
 
 enum CountdownTimer
 {
-	CTimer_Null = 0
+	CTimer_Null = 0 /**< Invalid Timer when lookup fails */
 };
 
 enum IntervalTimer
 {
-	ITimer_Null = 0
+	ITimer_Null = 0 /**< Invalid Timer when lookup fails */
 };
 
+/* Timer addresses */
+
+/**
+ * Get a reference to the VersusStart CountdownTimer
+ *
+ * @note This timer controls when the saferoom door will open and PZ spawning is enabled
+ *
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ */
 stock CountdownTimer:L4D2Direct_GetVSStartTimer()
 {
 	static Address:pVSStartTimer = Address_Null;
@@ -62,99 +71,191 @@ stock CountdownTimer:L4D2Direct_GetVSStartTimer()
 	return CountdownTimer:pVSStartTimer;
 }
 
-static stock Float:CTimer_GetDuration( CountdownTimer:timer )
-{
-	return Float:LoadFromAddress( Address:timer + CTIMER_DURATION_OFFSET , NumberType_Int32 );
-}
+/* CountdownTimer funcs */
 
-static stock CTimer_SetDuration( CountdownTimer:timer , Float:duration )
-{
-	StoreToAddress( Address:timer + CTIMER_DURATION_OFFSET , _:duration , NumberType_Int32 );
-}
-
-static stock Float:CTimer_GetTimestamp( CountdownTimer:timer )
-{
-	return Float:LoadFromAddress( Address:timer + CTIMER_TIMESTAMP_OFFSET , NumberType_Int32 );
-}
-
-static stock CTimer_SetTimestamp( CountdownTimer:timer , Float:timestamp )
-{
-	StoreToAddress( Address:timer + CTIMER_TIMESTAMP_OFFSET , _:timestamp , NumberType_Int32 );
-}
-
-static stock Float:ITimer_GetTimestamp( IntervalTimer:timer )
-{
-	return Float:LoadFromAddress( Address:timer + ITIMER_TIMESTAMP_OFFSET , NumberType_Int32 );
-}
-
-static stock ITimer_SetTimestamp( IntervalTimer:timer , Float:timestamp )
-{
-	StoreToAddress( Address:timer + ITIMER_TIMESTAMP_OFFSET , _:timestamp , NumberType_Int32 );
-}
-
+/**
+ * Reset a CountdownTimer to begin counting down again from now to its original duration
+ *
+ * @param timer		CountdownTimer to reset
+ * @noreturn
+ */
 stock CTimer_Reset( CountdownTimer:timer )
 {
 	CTimer_SetTimestamp( timer , GetGameTime() + CTimer_GetDuration( timer ) );
 }
 
+/**
+ * Start a CountdownTimer from now for a given duration
+ *
+ * @param timer		CountdownTimer to reset
+ * @param duration	Duration for this CountdownTimer to use, in seconds
+ * @noreturn
+ */
 stock CTimer_Start( CountdownTimer:timer , Float:duration )
 {
 	CTimer_SetTimestamp( timer , GetGameTime() + duration );
 	CTimer_SetDuration( timer , duration );
 }
 
+/**
+ * Invalidate a CountdownTimer, so it is considered not running
+ *
+ * @param timer		CountdownTimer to Invalidate
+ * @noreturn
+ */
 stock CTimer_Invalidate( CountdownTimer:timer )
 {
 	CTimer_SetTimestamp( timer , -1.0 );
 }
 
+/**
+ * Determine if a CountdownTimer has started counting down.
+ *
+ * @param timer		CountdownTimer to check
+ * @return			True if it has started running, False if it is not (Invalidated)
+ */
 stock bool:CTimer_HasStarted( CountdownTimer:timer )
 {
 	return CTimer_GetTimestamp( timer ) >= 0.0;
 }
 
+/**
+ * Determine if a CountdownTimer is elapsed.
+ *
+ * @param timer		CountdownTimer to check
+ * @return			True if the timer's duration has passed since it started, false otherwise.
+ */
 stock bool:CTimer_IsElapsed( CountdownTimer:timer )
 {
 	return GetGameTime() >= CTimer_GetTimestamp( timer );
 }
 
+/**
+ * Check how long a CountdownTimer has been running
+ *
+ * @param timer		CountdownTimer to check
+ * @return			Time since the CountdownTimer was last Started or Reset, in seconds.
+ */
 stock Float:CTimer_GetElapsedTime( CountdownTimer:timer )
 {
 	return ( GetGameTime() - CTimer_GetTimestamp( timer ) ) + CTimer_GetDuration( timer );
 }
 
+/**
+ * Check how much time remains before a CountdownTimer is elapsed.
+ *
+ * @param timer		CountdownTimer to check
+ * @return			Time until the CountdownTimer is elapsed, in seconds.
+ */
 stock Float:CTimer_GetRemainingTime( CountdownTimer:timer )
 {
 	return CTimer_GetTimestamp( timer ) - GetGameTime();
 }
 
+/**
+ * Get the countdown duration used for a CountdownTimer
+ *
+ * @param timer		CountdownTimer to check
+ * @return			Countdown duration in seconds if timer is running, or 0.0 if timer is invalidated (not running)
+ */
 stock Float:CTimer_GetCountdownDuration( CountdownTimer:timer )
 {
 	return ( CTimer_GetTimestamp( timer ) > 0.0 ) ? CTimer_GetDuration( timer ) : 0.0;
 }
 
+/* IntervalTimer funcs */
+
+/**
+ * Reset an IntervalTimer to begin counting up again from now
+ *
+ * @param timer		IntervalTimer to reset
+ * @noreturn
+ */
 stock ITimer_Reset( IntervalTimer:timer )
 {
 	ITimer_SetTimestamp( timer , GetGameTime() );
 }
 
+/**
+ * Start an IntervalTimer to begin counting up from now
+ *
+ * @note This is the same as reset for IntervalTimers...
+ *
+ * @param timer		IntervalTimer to start
+ * @noreturn
+ */
 stock ITimer_Start( IntervalTimer:timer )
 {
 	ITimer_SetTimestamp( timer , GetGameTime() );
 }
 
+/**
+ * Invalidate an IntervalTimer, so it is considered not running
+ *
+ * @param timer		IntervalTimer to Invalidate
+ * @noreturn
+ */
 stock ITimer_Invalidate( IntervalTimer:timer )
 {
 	ITimer_SetTimestamp( timer , -1.0 );
 }
 
+/**
+ * Check if an IntervalTimer has started
+ *
+ * @param timer		IntervalTimer to check
+ * @return			True if the IntervalTimer is running, false if it is Invalidated
+ */
 stock bool:ITimer_HasStarted( IntervalTimer:timer )
 {
 	return ( ITimer_GetTimestamp( timer ) > 0.0 );
 }
 
+/**
+ * Get the elapsed time of an IntervalTimer
+ *
+ * @param timer		IntervalTimer to check
+ * @return			Elapsed time of the IntervalTimer in seconds if it has started, or 99999.9 ("infinite") if it is Invalidated
+ */
 stock Float:ITimer_GetElapsedTime( IntervalTimer:timer )
 {
 	return ITimer_GetHasStarted( timer ) ? GetGameTime() - ITimer_GetTimestamp() : 99999.9;
 }
 
+/* Timer Internals */
+
+// Read duration variable in CTimer
+static stock Float:CTimer_GetDuration( CountdownTimer:timer )
+{
+	return Float:LoadFromAddress( Address:timer + CTIMER_DURATION_OFFSET , NumberType_Int32 );
+}
+
+// Set duration variable in CTimer
+static stock CTimer_SetDuration( CountdownTimer:timer , Float:duration )
+{
+	StoreToAddress( Address:timer + CTIMER_DURATION_OFFSET , _:duration , NumberType_Int32 );
+}
+
+// Read timestamp variable in CTimer
+static stock Float:CTimer_GetTimestamp( CountdownTimer:timer )
+{
+	return Float:LoadFromAddress( Address:timer + CTIMER_TIMESTAMP_OFFSET , NumberType_Int32 );
+}
+
+// Set timestamp variable in CTimer
+static stock CTimer_SetTimestamp( CountdownTimer:timer , Float:timestamp )
+{
+	StoreToAddress( Address:timer + CTIMER_TIMESTAMP_OFFSET , _:timestamp , NumberType_Int32 );
+}
+
+// Read timestamp variable in ITimer
+static stock Float:ITimer_GetTimestamp( IntervalTimer:timer )
+{
+	return Float:LoadFromAddress( Address:timer + ITIMER_TIMESTAMP_OFFSET , NumberType_Int32 );
+}
+
+// Set timestamp variable in ITimer
+static stock ITimer_SetTimestamp( IntervalTimer:timer , Float:timestamp )
+{
+	StoreToAddress( Address:timer + ITIMER_TIMESTAMP_OFFSET , _:timestamp , NumberType_Int32 );
+}

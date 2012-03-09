@@ -37,6 +37,11 @@
 
 /* L4D2_Direct internals */
 
+/**
+ * Get a handle to the L4D2Direct GameConfig (gamedata)
+ *
+ * @return				Handle to the l4d2_direct game config, or INVALID_HANDLE if not found.
+ */
 stock Handle:L4D2Direct_GetGameConf()
 {
 	static Handle:g_hGameConf_l4d2dir = INVALID_HANDLE;
@@ -47,6 +52,11 @@ stock Handle:L4D2Direct_GetGameConf()
 	return g_hGameConf_l4d2dir;
 }
 
+/**
+ * Get the address of the global CDirector instance (TheDirector)
+ *
+ * @return				Address of the global CDirector, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetCDirector()
 {
 	static Address:TheDirector = Address_Null;
@@ -57,6 +67,11 @@ stock Address:L4D2Direct_GetCDirector()
 	return TheDirector;
 }
 
+/**
+ * Get the address of the global CDirectorVersusMode instance (TheDirector->VersusModePtr)
+ *
+ * @return				Address of the global CDirectorVersusMode, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetCDirectorVersusMode()
 {
 	static Address:pVersusModeDirector = Address_Null;
@@ -68,6 +83,11 @@ stock Address:L4D2Direct_GetCDirectorVersusMode()
 	return pVersusModeDirector;
 }
 
+/**
+ * Get the address of the global TerrorNavMesh instance (TheNavMesh)
+ *
+ * @return				Address of the global TheNavMesh, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetTerrorNavMesh()
 {
 	static Address:TheNavMesh = Address_Null;
@@ -78,6 +98,11 @@ stock Address:L4D2Direct_GetTerrorNavMesh()
 	return TheNavMesh;
 }
 
+/**
+ * Get the address of CDIrector::m_iTankCount in the global CDirector instance
+ *
+ * @return				Address of the TankCount variable, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetTankCountAddr()
 {
 	static Address:pTankCount = Address_Null;
@@ -90,6 +115,11 @@ stock Address:L4D2Direct_GetTankCountAddr()
 	return pTankCount
 }
 
+/**
+ * Get the address of CDIrectorVersusMode::m_iCampaignScores in the global CDirectorVersusMode instance
+ *
+ * @return				Address of the CampaignScores array, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetVSCampaignScoresAddr()
 {
 	static Address:pCampaignScores = Address_Null;
@@ -102,6 +132,11 @@ stock Address:L4D2Direct_GetVSCampaignScoresAddr()
 	return pCampaignScores;
 }
 
+/**
+ * Get the address of CDIrectorVersusMode::m_fTankSpawnFlowPercent in the global CDirectorVersusMode instance
+ *
+ * @return				Address of the TankFlow array, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetVSTankFlowAddr()
 {
 	static Address:pTankFlowPercent = Address_Null;
@@ -114,6 +149,11 @@ stock Address:L4D2Direct_GetVSTankFlowAddr()
 	return pTankFlowPercent;
 }
 
+/**
+ * Get the address of CDIrectorVersusMode::m_bTankThisRound in the global CDirectorVersusMode instance
+ *
+ * @return				Address of the TankToSpawn array, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GeVSTankToSpawnAddr()
 {
 	static Address:pTankSpawnThisRound = Address_Null;
@@ -126,6 +166,11 @@ stock Address:L4D2Direct_GeVSTankToSpawnAddr()
 	return pTankSpawnThisRound;
 }
 
+/**
+ * Get the address of CDIrectorVersusMode::m_fWitchSpawnFlowPercent in the global CDirectorVersusMode instance
+ *
+ * @return				Address of the WitchFlow array, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetVSWitchFlowAddr()
 {
 	static Address:pWitchFlowPercent = Address_Null;
@@ -138,6 +183,11 @@ stock Address:L4D2Direct_GetVSWitchFlowAddr()
 	return pWitchFlowPercent;
 }
 
+/**
+ * Get the address of CDIrectorVersusMode::m_bWitchThisRound in the global CDirectorVersusMode instance
+ *
+ * @return				Address of the WitchToSpawn array, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetVSWitchToSpawnAddr()
 {
 	static Address:pWitchSpawnThisRound = Address_Null;
@@ -150,6 +200,11 @@ stock Address:L4D2Direct_GetVSWitchToSpawnAddr()
 	return pWitchSpawnThisRound;
 }
 
+/**
+ * Get the address of TerrorNavMesh::m_fMapMaxFlowDistance in the global TerrorNavMesh instance
+ *
+ * @return				Address of the MapMaxFlowDistance variable, or Address_Null on failure.
+ */
 stock Address:L4D2Direct_GetMapMaxFlowDistanceAddr()
 {
 	static Address:pMapMaxFlowDistance = Address_Null;

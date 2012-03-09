@@ -37,22 +37,6 @@
 #include <l4d2d_internals>
 #include <l4d2d_timers>
 
-/* These class numbers are the same ones used internally in L4D2 */
-enum SIClass
-{
-	SI_None=0,
-	SI_Smoker=1,
-	SI_Boomer,
-	SI_Hunter,
-	SI_Spitter,
-	SI_Jockey,
-	SI_Charger,
-	SI_Witch,
-	SI_Tank
-};
-
-stock const String:g_sSIClassNames[SIClass][] = 
-{	"", "Smoker", "Boomer", "Hunter", "Spitter", "Jockey", "Charger", "Witch", "Tank" };
 
 /* CDirector Variable access */
 
@@ -100,9 +84,10 @@ stock CountdownTimer:L4D2Direct_GetMobSpawnTimer()
  * @param class		SI Class to retrieve timer for
  * @return			IntervalTimer reference to the timer, or ITimer_Null on lookup failure or bad class.
  */
-stock IntervalTimer:L4D2Direct_GetSIClassDeathTimer(SIClass:class)
+stock IntervalTimer:L4D2Direct_GetSIClassDeathTimer(class)
 {
-	if(class < SI_Smoker || class > SI_Charger) return ITimer_Null;
+	// Should be between smoker and charger
+	if(class < 1 || class > 6) return ITimer_Null;
 	
 	static Address:pSIDeathTimers = Address_Null;
 	if(pSIDeathTimers == Address_Null)
@@ -111,7 +96,31 @@ stock IntervalTimer:L4D2Direct_GetSIClassDeathTimer(SIClass:class)
 		if(offs == -1) return ITimer_Null;
 		pSIDeathTimers = L4D2Direct_GetCDirector() + Address:offs;
 	}
-	return IntervalTimer:(_:pSIDeathTimers + ((_:class - 1) * SIZEOF_ITIMER));
+	return IntervalTimer:(_:pSIDeathTimers + ((class - 1) * SIZEOF_ITIMER));
+}
+
+/**
+ * Get a reference to a CountdownTimer that counts down from the last attempted director-controlled spawn of an SI
+ *
+ * @note The main place I've seen these timers used is in the SI spawning algorithms (CDirector::UpdateSpecialSpawns)
+ * @note This timer is hard-coded to use a duration of 20.0s.
+ *
+ * @param class		SI Class to retrieve timer for
+ * @return			CountdownTimer reference to the timer, or CTimer_Null on lookup failure or bad class.
+ */
+stock CountdownTimer:L4D2Direct_GetSIClassSpawnTimer(class)
+{
+	// Should be between smoker and charger
+	if(class < 1 || class > 6) return CTimer_Null;
+	
+	static Address:pSISpawnTimers = Address_Null;
+	if(pSISpawnTimers == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::ClassSpawnTimers");
+		if(offs == -1) return CTimer_Null;
+		pSISpawnTimers = L4D2Direct_GetCDirector() + Address:offs;
+	}
+	return CountdownTimer:(_:pSISpawnTimers + ((class - 1) * SIZEOF_CTIMER));
 }
 
 /* CDirectorVersusMode Variable access */

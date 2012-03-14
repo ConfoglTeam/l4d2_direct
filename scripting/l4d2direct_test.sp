@@ -26,6 +26,18 @@ public OnPluginStart()
 	RegConsoleCmd("sm_timertest", timertest);
 	RegConsoleCmd("sm_sitimers", sitimers);
 	RegConsoleCmd("sm_dumpglobals", dumpglobals);
+	RegConsoleCmd("sm_settank", settank);
+}
+
+public Action:settank(client,args)
+{
+	static String:buffer[64];
+	GetCmdArg(1, buffer, sizeof(buffer));
+	new Float:flow = StringToFloat(buffer);
+	L4D2Direct_SetVSTankFlowPercent(0, flow);
+	L4D2Direct_SetVSTankFlowPercent(1, flow);
+	ReplyToCommand(client, "Looks good? %.02f %.02f", L4D2Direct_GetVSTankFlowPercent(0)*100, L4D2Direct_GetVSTankFlowPercent(1)*100);
+	return Plugin_Handled;
 }
 
 public Action:addtest(client,args)

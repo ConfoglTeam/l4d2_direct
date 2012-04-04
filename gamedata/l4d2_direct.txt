@@ -349,6 +349,14 @@
 				"windows"	"1748"
 				"linux"		"1744"
 			}
+			
+			/* CTerrorPlayer Variable Offsets */
+			
+			"CTerrorPlayer::SpawnTimer"
+			{
+				"windows"	"11260"
+				"linux"		"11244"
+			}
 		}
 		
 		"Signatures"

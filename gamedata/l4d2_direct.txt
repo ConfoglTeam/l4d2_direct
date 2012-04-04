@@ -34,6 +34,13 @@
 		
 		"Offsets"
 		{
+			/* Virtual Table Offsets */
+			"CBaseEntity::GetBaseEntity"
+			{
+				"windows" 	"7"
+				"linux"		"6"
+			}
+
 			/* Offsets into CDirector of other CDirector class pointers */
 
 			"CDirectorTacticalServices"

@@ -34,6 +34,7 @@
 #define _l4d2d_internals_included
 
 #include <sourcemod>
+#include <sdktools>
 
 /* L4D2_Direct internals */
 
@@ -235,4 +236,30 @@ stock Address:L4D2Direct_GetMapMaxFlowDistanceAddr()
 		pMapMaxFlowDistance = L4D2Direct_GetTerrorNavMesh() + Address:offs;
 	}
 	return pMapMaxFlowDistance;
+}
+
+
+stock Address:GetEntityAddress(entity)
+{
+	if(!IsValidEntity(entity))
+	{
+		return Address_Null;
+	}
+	static Handle:GetBaseEntitySDKCall = INVALID_HANDLE;
+	if(GetBaseEntitySDKCall == INVALID_HANDLE)
+	{
+		StartPrepSDKCall(SDKCall_Entity);
+		if(!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Virtual, "CBaseEntity::GetBaseEntity"))
+		{
+			return Address_Null;
+		}
+		PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
+		GetBaseEntitySDKCall = EndPrepSDKCall();
+		
+		if(GetBaseEntitySDKCall == INVALID_HANDLE)
+		{
+			return Address_Null;
+		}
+	}
+	return Address:SDKCall(GetBaseEntitySDKCall, entity);
 }

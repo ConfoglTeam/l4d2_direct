@@ -27,6 +27,28 @@ public OnPluginStart()
 	RegConsoleCmd("sm_sitimers", sitimers);
 	RegConsoleCmd("sm_dumpglobals", dumpglobals);
 	RegConsoleCmd("sm_settank", settank);
+	RegConsoleCmd("sm_myaddy", myaddy);
+}
+
+public Action:myaddy(client,args)
+{
+	if(client == 0)
+	{
+		ReplyToCommand(client, "Sorry bro gotta be an entity");
+		return Plugin_Handled;
+	}
+	new Address:me = GetEntityAddress(client);
+	if(me == Address_Null)
+	{
+		ReplyToCommand(client, "Utter failure");
+		return Plugin_Handled;
+	}
+	new CountdownTimer:ctimer588 = CountdownTimer:(me+Address:11432);
+	new CountdownTimer:ctimer600 = CountdownTimer:(me+Address:11444);
+	CTimerReply(client, ctimer588, "ctimer588");
+	CTimerReply(client, ctimer600, "ctimer600");
+
+	return Plugin_Handled;
 }
 
 public Action:settank(client,args)

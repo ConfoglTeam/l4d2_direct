@@ -380,3 +380,29 @@ stock Float:L4D2Direct_GetMapMaxFlowDistance()
 {
 	return Float:LoadFromAddress( L4D2Direct_GetMapMaxFlowDistanceAddr() , NumberType_Int32 );
 }
+
+/* CTerrorPlayer Variable access */
+
+/**
+ * Get a reference to a CountdownTimer that tracks when an SI player can next spawn.
+ *
+ * @note The duration of this timer is controlled by the cvars z_ghost_delay_min and z_ghost_delay_max.
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ * @error				Invalid client.
+ */
+stock CountdownTimer:L4D2Direct_GetSpawnTimer(client)
+{
+	if (client < 1 || client > MaxClients)
+		return CTimer_Null;
+
+	new Address:pEntity = GetEntityAddress(client);
+	if (pEntity == Address_Null)
+		return CTimer_Null;
+
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::SpawnTimer");
+	if (offs == -1)
+		return CTimer_Null;
+
+	return CountdownTimer:(pEntity + Address:offs);
+}
+

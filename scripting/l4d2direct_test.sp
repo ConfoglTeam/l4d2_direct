@@ -28,6 +28,19 @@ public OnPluginStart()
 	RegConsoleCmd("sm_dumpglobals", dumpglobals);
 	RegConsoleCmd("sm_settank", settank);
 	RegConsoleCmd("sm_myaddy", myaddy);
+	RegConsoleCmd("sm_myspawntimer", myspawntimer);
+}
+
+public Action:myspawntimer(client,args)
+{
+	new CountdownTimer:spawnTimer = L4D2Direct_GetSpawnTimer(client);
+	
+	if (spawnTimer != CTimer_Null)
+		CTimerReply(client, spawnTimer, "Spawn timer");
+	else
+		ReplyToCommand(client, "No timer");
+	
+	return Plugin_Handled;
 }
 
 public Action:myaddy(client,args)

@@ -29,6 +29,38 @@ public OnPluginStart()
 	RegConsoleCmd("sm_settank", settank);
 	RegConsoleCmd("sm_myaddy", myaddy);
 	RegConsoleCmd("sm_myspawntimer", myspawntimer);
+	RegConsoleCmd("sm_mytickets", mytickets);
+	RegConsoleCmd("sm_myflow", myflow);
+}
+
+public Action:myflow(client, args)
+{
+	if (client == 0)
+	{
+		ReplyToCommand(client, "Not the server bro");
+		return;
+	}
+	
+	new Float:pos[3];
+	GetEntPropVector(client, Prop_Send, "m_vecOrigin", pos);
+	
+	new Address:pNavArea = L4D2Direct_GetTerrorNavArea(pos);
+	
+	if (pNavArea == Address_Null)
+	{
+		ReplyToCommand(client, "You're no where");
+		return;
+	}
+	
+	new Float:flow = L4D2Direct_GetTerrorNavAreaFlow(pNavArea);
+	new prcnt = RoundToNearest((flow / L4D2Direct_GetMapMaxFlowDistance()) * 100.0);
+	ReplyToCommand(client, "flow = %f (%d%%)", flow, prcnt);
+}
+
+public Action:mytickets(client, args)
+{
+	new tickets = L4D2Direct_GetTankTickets(client);
+	ReplyToCommand(client, "Your tank lottery tickets = %d", tickets);
 }
 
 public Action:myspawntimer(client,args)

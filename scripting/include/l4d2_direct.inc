@@ -387,6 +387,7 @@ stock Float:L4D2Direct_GetMapMaxFlowDistance()
  * Get a reference to a CountdownTimer that tracks when an SI player can next spawn.
  *
  * @note The duration of this timer is controlled by the cvars z_ghost_delay_min and z_ghost_delay_max.
+ * @param client		Client id to get the spawn timer for
  * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
  * @error				Invalid client.
  */
@@ -404,5 +405,109 @@ stock CountdownTimer:L4D2Direct_GetSpawnTimer(client)
 		return CTimer_Null;
 
 	return CountdownTimer:(pEntity + Address:offs);
+}
+
+/**
+ * Looks up the number of tickets a client has for entry into the tank lottery.
+ *
+ * @note The number of tickets you have is equal to your damage done as an SI and will still increase as you do damage with the Tank.
+ * @note When the tank is passed away from you your tickets are set back to zero.
+ * @param client		Client id to get the tickets for
+ * @return				Number of tickets.
+ * @error				Invalid client.
+ */
+stock L4D2Direct_GetTankTickets(client)
+{
+	if (client < 1 || client > MaxClients)
+		return -1;
+
+	new Address:pEntity = GetEntityAddress(client);
+	if (pEntity == Address_Null)
+		return -1;
+
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::m_iTankTickets");
+	if (offs == -1)
+		return -1;
+
+	return LoadFromAddress(pEntity + Address:offs, NumberType_Int32);
+}
+
+/**
+ * Sets the number of tickets a player has for entry into the tank lottery.
+ *
+ * @param client		Client id to set the tickets for
+ * @param tickets		New value for the client's tank lottery tickets
+ * @noreturn
+ * @error				Invalid client.
+ */
+stock L4D2Direct_SetTankTickets(client, tickets)
+{
+	if (client < 1 || client > MaxClients)
+		return -1;
+
+	new Address:pEntity = GetEntityAddress(client);
+	if (pEntity == Address_Null)
+		return -1;
+
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::m_iTankTickets");
+	if (offs == -1)
+		return -1;
+
+	StoreToAddress(pEntity + Address:offs, tickets, NumberType_Int32);
+}
+
+/**
+ * Get the TerrorNavArea which holds a specific position.
+ *
+ * @note Some positions will not return a nav area (Address_Null). Notable examples are saferooms and small ledges like the guard rail at the start of c2m1_highway.
+ * @param pos           The position to find the containing nav area of
+ * @param beneathLimit
+ * @return              Address to a TerrorNavArea or Address_Null
+ * @error               Unable to prepare SDK call
+ */
+stock Address:L4D2Direct_GetTerrorNavArea(Float:pos[3], Float:beneathLimit = 120.0)
+{
+	static Handle:GetNavAreaSDKCall = INVALID_HANDLE;
+
+	if (GetNavAreaSDKCall == INVALID_HANDLE)
+	{
+		StartPrepSDKCall(SDKCall_Raw);
+		
+		if (!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Signature, "CNavMesh::GetNavArea"))
+		{
+			return Address_Null;
+		}
+		
+		PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
+		PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+		PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
+		GetNavAreaSDKCall = EndPrepSDKCall();
+		
+		if (GetNavAreaSDKCall == INVALID_HANDLE)
+		{
+			return Address_Null;
+		}
+	}
+	
+	return Address:SDKCall(GetNavAreaSDKCall, L4D2Direct_GetTerrorNavMesh(), pos, beneathLimit);
+}
+
+/**
+ * Find the distance through the map (in flow units) that a TerrorNavArea is located.
+  *
+ * @param  pTerrorNavArea   Pointer to a TerrorNavArea
+ * @return                  The flow units through the map that the TerrorNavArea is located at.
+ * @error                   When passed an Address_Null
+ */
+stock Float:L4D2Direct_GetTerrorNavAreaFlow(Address:pTerrorNavArea)
+{
+	if (pTerrorNavArea == Address_Null)
+		return 0.0;
+
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "TerrorNavArea::m_flow");
+	if (offs == -1)
+		return 0.0;
+
+	return Float:LoadFromAddress(pTerrorNavArea + Address:offs, NumberType_Int32);
 }
 

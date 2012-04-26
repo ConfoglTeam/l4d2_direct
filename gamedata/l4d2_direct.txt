@@ -37,7 +37,7 @@
 			/* Virtual Table Offsets */
 			"CBaseEntity::GetBaseEntity"
 			{
-				"windows" 	"7"
+				"windows" 	"5"
 				"linux"		"6"
 			}
 

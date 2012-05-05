@@ -133,7 +133,7 @@ stock Address:L4D2Direct_GetTankCountAddr()
 		if(offs == -1) return Address_Null;
 		pTankCount = L4D2Direct_GetCDirector() + Address:offs;
 	}
-	return pTankCount
+	return pTankCount;
 }
 
 /**

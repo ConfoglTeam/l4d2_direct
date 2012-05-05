@@ -443,15 +443,15 @@ stock L4D2Direct_GetTankTickets(client)
 stock L4D2Direct_SetTankTickets(client, tickets)
 {
 	if (client < 1 || client > MaxClients)
-		return -1;
+		return;
 
 	new Address:pEntity = GetEntityAddress(client);
 	if (pEntity == Address_Null)
-		return -1;
+		return;
 
 	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::m_iTankTickets");
 	if (offs == -1)
-		return -1;
+		return;
 
 	StoreToAddress(pEntity + Address:offs, tickets, NumberType_Int32);
 }

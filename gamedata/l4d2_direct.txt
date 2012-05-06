@@ -413,6 +413,14 @@
 				/* 83 EC 10 56 8B F1 83 7E ? ? 75 ? 33 C0 5E 83 C4 10 C2 08 */
 				"linux"		"@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
 			}
+			
+			"CDirector::TryOfferingTankBot"
+			{
+				"library"	"server"
+				"linux"		"@_ZN9CDirector18TryOfferingTankBotEP11CBaseEntityb"
+				"windows"	"\x51\x83\x7C\x24\x08\x00\x55\x8B\xE9\x0F\x84"
+				/* 51 83 7C 24 08 00 55 8B E9 0F 84  - No addresses-fairly unique call*/
+			}
 		}
 		
 	}

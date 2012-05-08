@@ -494,7 +494,7 @@ stock Address:L4D2Direct_GetTerrorNavArea(Float:pos[3], Float:beneathLimit = 120
 
 /**
  * Find the distance through the map (in flow units) that a TerrorNavArea is located.
-  *
+ *
  * @param  pTerrorNavArea   Pointer to a TerrorNavArea
  * @return                  The flow units through the map that the TerrorNavArea is located at.
  * @error                   When passed an Address_Null
@@ -509,5 +509,40 @@ stock Float:L4D2Direct_GetTerrorNavAreaFlow(Address:pTerrorNavArea)
 		return 0.0;
 
 	return Float:LoadFromAddress(pTerrorNavArea + Address:offs, NumberType_Int32);
+}
+
+/**
+ * Force the director to pass the tank.
+ *
+ * @param entity			Entity index of the tank
+ * @param bEnterStasis		Should the tank be put in statis
+ * @return					False on error otherwise true
+ * @error					SDK call preparation failed
+ */ 
+stock bool:L4D2Direct_TryOfferingTankBot(entity, bEnterStasis)
+{
+	static Handle:TryOfferingTankBotSDKCall = INVALID_HANDLE;
+
+	if (TryOfferingTankBotSDKCall == INVALID_HANDLE)
+	{
+		StartPrepSDKCall(SDKCall_Raw);
+		
+		if (!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Signature, "CDirector::TryOfferingTankBot"))
+		{
+			return false;
+		}
+		
+		PrepSDKCall_AddParameter(SDKType_CBaseEntity, SDKPass_Pointer);
+		PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
+		TryOfferingTankBotSDKCall = EndPrepSDKCall();
+		
+		if (TryOfferingTankBotSDKCall == INVALID_HANDLE)
+		{
+			return false;
+		}
+	}
+	
+	SDKCall(TryOfferingTankBotSDKCall, L4D2Direct_GetCDirector(), entity, bEnterStasis);
+	return true;
 }
 

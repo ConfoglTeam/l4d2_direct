@@ -147,6 +147,12 @@
 				"linux"		"1122"
 			}
 			
+			"CDirector::m_iTankPassedCount"
+			{
+				"windows"	"88"
+				"linux"		"88"
+			}
+			
 			/* CDirectorVersusMode Variable Offsets */
 			
 			"CDirectorVersusMode::m_bVersusRoundInProgress"

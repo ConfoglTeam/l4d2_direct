@@ -137,6 +137,23 @@ stock Address:L4D2Direct_GetTankCountAddr()
 }
 
 /**
+ * Get the address of CDirector::m_iTankPassedCount in the global CDirector instance.
+ *
+ * @return				Address of m_iTankPassedCount variable, or Address_Null on failure.
+ */
+stock Address:L4D2Direct_GetTankPassedCountAddr()
+{
+	static Address:pTankPassedCount = Address_Null;
+	if (pTankPassedCount == Address_Null)
+	{
+		new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CDirector::m_iTankPassedCount");
+		if (offs == -1) return Address_Null;
+		pTankPassedCount = L4D2Direct_GetCDirector() + Address:offs;
+	}
+	return pTankPassedCount;
+}
+
+/**
  * Get the address of CDIrectorVersusMode::m_iCampaignScores in the global CDirectorVersusMode instance
  *
  * @return				Address of the CampaignScores array, or Address_Null on failure.

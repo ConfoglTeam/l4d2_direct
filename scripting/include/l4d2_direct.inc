@@ -123,6 +123,35 @@ stock CountdownTimer:L4D2Direct_GetSIClassSpawnTimer(class)
 	return CountdownTimer:(_:pSISpawnTimers + ((class - 1) * SIZEOF_CTIMER));
 }
 
+/**
+ * Gets the number of times the tank has passed to a player.
+ *
+ * @note When this variable is >1 the tank will be replaced with a bot when the his frustration reaches 0.
+ * @note The initial pass from AI to a player counts as a pass.
+ * @note As this is global on the director weird things could potentially happen if more than one tank is alive at a time with z_frustration 1.
+ *
+ * @return          The number of passes.
+ */
+stock L4D2Direct_GetTankPassedCount()
+{
+	return LoadFromAddress(L4D2Direct_GetTankPassedCountAddr(), NumberType_Int32);
+}
+
+/**
+ * Sets the number of times the tank has passed to a player.
+ *
+ * @note When this variable is >1 the tank will be replaced with a bot when the his frustration reaches 0.
+ * @note The initial pass from AI to a player counts as a pass.
+ * @note As this is global on the director weird things could potentially happen if more than one tank is alive at a time with z_frustration 1.
+ *
+ * @param           New number of passes value
+ * @noreturn
+ */
+stock L4D2Direct_SetTankPassedCount(passes)
+{
+	StoreToAddress(L4D2Direct_GetTankPassedCountAddr(), passes, NumberType_Int32);
+}
+
 /* CDirectorVersusMode Variable access */
 
 /**

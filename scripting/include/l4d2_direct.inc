@@ -450,15 +450,11 @@ stock L4D2Direct_GetTankTickets(client)
 	if (client < 1 || client > MaxClients)
 		return -1;
 
-	new Address:pEntity = GetEntityAddress(client);
-	if (pEntity == Address_Null)
-		return -1;
-
-	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::m_iTankTickets");
-	if (offs == -1)
-		return -1;
-
-	return LoadFromAddress(pEntity + Address:offs, NumberType_Int32);
+	new value;
+	if (GetEntityValueFromOffset(client, "CTerrorPlayer::m_iTankTickets", NumberType_Int32, value))
+		return value;
+	
+	return -1;
 }
 
 /**
@@ -474,15 +470,75 @@ stock L4D2Direct_SetTankTickets(client, tickets)
 	if (client < 1 || client > MaxClients)
 		return;
 
-	new Address:pEntity = GetEntityAddress(client);
-	if (pEntity == Address_Null)
-		return;
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_iTankTickets", NumberType_Int32, tickets);
+}
 
-	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::m_iTankTickets");
-	if (offs == -1)
-		return;
+/**
+ * Gets a client's shove penalty.
+ *
+ * @note The returned value will be between 0 and z_gun_swing_{vs,coop}_max_penalty.
+ * @param client		Client id
+ * @return				Shove penlty of -1 on error
+ */
+stock L4D2Direct_GetShovePenalty(client)
+{
+	if (client < 1 || client > MaxClients)
+		return -1;
+	
+	new value;
+	if (GetEntityValueFromOffset(client, "CTerrorPlayer::m_iShovePenalty", NumberType_Int32, value))
+	    return value;
+	
+	return -1;
+}
 
-	StoreToAddress(pEntity + Address:offs, tickets, NumberType_Int32);
+/**
+ * Sets a client's shove penalty.
+ *
+ * @note The penalty should be set between 0 and z_gun_swing_{vs,coop}_max_penalty.
+ * @param client		Client id
+ * @param penalty		Shove penalty
+ * @noreturn
+ */ 
+stock L4D2Direct_SetShovePenalty(client, penalty)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+	
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_iShovePenalty", NumberType_Int32, penalty);
+}
+
+/**
+ * Gets the time at which a survivor can perform his next +attack2.
+ *
+ * @param client		Client id
+ * @return				Time or 0.0 on error
+ */
+stock Float:L4D2Direct_GetNextShoveTime(client)
+{
+	if (client < 1 || client > MaxClients)
+		return 0.0;
+	
+	new time;
+	if (GetEntityValueFromOffset(client, "CTerrorPlayer::m_fNextShoveTime", NumberType_Int32, time))
+		return Float:time;
+	
+	return 0.0;
+}
+
+/**
+ * Sets the time at which a survivor can perform his next +attack2.
+ *
+ * @param client		Client id
+ * @param time			Game time
+ * @noreturn
+ */
+stock L4D2Direct_SetNextShoveTime(client, Float:time)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+	
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_fNextShoveTime", NumberType_Int32, _:time);
 }
 
 /**

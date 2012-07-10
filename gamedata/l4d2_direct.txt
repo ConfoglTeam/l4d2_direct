@@ -370,6 +370,18 @@
 				"linux"		"12408"
 			}
 			
+			"CTerrorPlayer::m_iShovePenalty"
+			{
+				"windows"	"11488"
+				"linux"		"11472"
+			}
+			
+			"CTerrorPlayer::m_fNextShoveTime"
+			{
+				"windows"	"11484"
+				"linux"		"11468"
+			}
+			
 			/* TerrorNavArea Variable Offsets */
 			
 			"TerrorNavArea::m_flow"

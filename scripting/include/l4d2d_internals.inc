@@ -255,7 +255,12 @@ stock Address:L4D2Direct_GetMapMaxFlowDistanceAddr()
 	return pMapMaxFlowDistance;
 }
 
-
+/**
+ * Gets the address of an entity to allow getting/setting data directly with offsets
+ *
+ * @param entity
+ * @return Address of entity or Address_Null on failure
+ */
 stock Address:GetEntityAddress(entity)
 {
 	if(!IsValidEntity(entity))
@@ -280,3 +285,50 @@ stock Address:GetEntityAddress(entity)
 	}
 	return Address:SDKCall(GetBaseEntitySDKCall, entity);
 }
+
+/**
+ * Gets entity data at a given offset
+ *
+ * @param entity
+ * @param offset name of the offset in gamedata
+ * @param size size of the value to retrieve
+ * @param value output parameter for the retrieved value
+ * @return bool
+ */
+stock GetEntityValueFromOffset(entity, const String:offset[], NumberType:size, &value)
+{
+	new Address:pEntity = GetEntityAddress(entity);
+	if (pEntity == Address_Null)
+		return false;
+	
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), offset);
+	if (offs == -1)
+		return false;
+	
+	value = LoadFromAddress(pEntity + Address:offs, size);
+	return true;
+}
+
+/**
+ * Sets data entity data at a given offset
+ *
+ * @param entity
+ * @param offset name of the offset in gamedata
+ * @param size size of the value to set
+ * @param value value to store at the offset
+ * @return bool
+ */
+stock SetEntityValueFromOffset(entity, const String:offset[], NumberType:size, value)
+{
+	new Address:pEntity = GetEntityAddress(entity);
+	if (pEntity == Address_Null)
+		return false;
+	
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), offset);
+	if (offs == -1)
+		return false;
+	
+	StoreToAddress(pEntity + Address:offs, value, size);
+	return true;
+}
+

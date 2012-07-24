@@ -382,6 +382,12 @@
 				"linux"		"11468"
 			}
 			
+			"CTerrorPlayer::m_fGodFrameEndTime"
+			{
+				"windows"	"11884"
+				"linux"		"11868"
+			}			
+			
 			/* TerrorNavArea Variable Offsets */
 			
 			"TerrorNavArea::m_flow"

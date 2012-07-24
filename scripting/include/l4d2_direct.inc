@@ -542,6 +542,21 @@ stock L4D2Direct_SetNextShoveTime(client, Float:time)
 }
 
 /**
+ * Sets the godframe end time.
+ *
+ * @param client		Client id
+ * @param time			Game time
+ * @noreturn
+ */
+stock L4D2Direct_SetGodFrameEndTime(client, Float:time)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+	
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_fGodFrameEndTime", NumberType_Int32, _:time);
+}
+
+/**
  * Get the TerrorNavArea which holds a specific position.
  *
  * @note Some positions will not return a nav area (Address_Null). Notable examples are saferooms and small ledges like the guard rail at the start of c2m1_highway.

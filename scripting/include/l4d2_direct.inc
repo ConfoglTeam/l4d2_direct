@@ -437,6 +437,29 @@ stock CountdownTimer:L4D2Direct_GetSpawnTimer(client)
 }
 
 /**
+ * Get a reference to a CountdownTimer that tracks when an survivor player is invulnerable due to "godframes".
+ *
+ * @param client		Client id to get the godframes timer for
+ * @return				CountdownTimer reference to the timer, or CTimer_Null on lookup failure.
+ * @error				Invalid client.
+ */
+stock CountdownTimer:L4D2Direct_GetInvulnerabilityTimer(client)
+{
+	if (client < 1 || client > MaxClients)
+		return CTimer_Null;
+
+	new Address:pEntity = GetEntityAddress(client);
+	if (pEntity == Address_Null)
+		return CTimer_Null;
+
+	new offs = GameConfGetOffset(L4D2Direct_GetGameConf(), "CTerrorPlayer::InvulnerabilityTimer");
+	if (offs == -1)
+		return CTimer_Null;
+
+	return CountdownTimer:(pEntity + Address:offs);
+}
+
+/**
  * Looks up the number of tickets a client has for entry into the tank lottery.
  *
  * @note The number of tickets you have is equal to your damage done as an SI and will still increase as you do damage with the Tank.

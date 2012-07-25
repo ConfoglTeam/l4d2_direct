@@ -364,6 +364,12 @@
 				"linux"		"11244"
 			}
 			
+			"CTerrorPlayer::InvulnerabilityTimer"
+			{
+				"windows"	"11876"
+				"linux"		"11860"
+			}	
+			
 			"CTerrorPlayer::m_iTankTickets"
 			{
 				"windows"	"12424"

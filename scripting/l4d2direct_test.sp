@@ -31,6 +31,19 @@ public OnPluginStart()
 	RegConsoleCmd("sm_myspawntimer", myspawntimer);
 	RegConsoleCmd("sm_mytickets", mytickets);
 	RegConsoleCmd("sm_myflow", myflow);
+	RegConsoleCmd("sm_myflowdist", myflowdist);
+}
+
+public Action:myflowdist(client, args)
+{
+	if (client == 0)
+	{
+		ReplyToCommand(client, "Clients only");
+		return;
+	}
+
+	new Float:dist = L4D2Direct_GetFlowDistance(client);
+	ReplyToCommand(client, "flowdist = %f", dist);
 }
 
 public Action:myflow(client, args)

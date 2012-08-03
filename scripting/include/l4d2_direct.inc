@@ -654,3 +654,35 @@ stock bool:L4D2Direct_TryOfferingTankBot(entity, bEnterStasis)
 	return true;
 }
 
+/**
+ * Gets a player's distance in flow units.
+ *
+ * @param client			Client ID
+ * @return					0.0 on error otherwise flow distance
+ * @error					SDK call preparation failed
+ */ 
+stock Float:L4D2Direct_GetFlowDistance(client)
+{
+	static Handle:GetFlowDistanceSDKCall = INVALID_HANDLE;
+
+	if (GetFlowDistanceSDKCall == INVALID_HANDLE)
+	{
+		StartPrepSDKCall(SDKCall_Player);
+		
+		if (!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Signature, "CTerrorPlayer::GetFlowDistance"))
+		{
+			return 0.0;
+		}
+		
+		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+		PrepSDKCall_SetReturnInfo(SDKType_Float, SDKPass_Plain);
+		GetFlowDistanceSDKCall = EndPrepSDKCall();
+		
+		if (GetFlowDistanceSDKCall == INVALID_HANDLE)
+		{
+			return 0.0;
+		}
+	}
+
+	return Float:SDKCall(GetFlowDistanceSDKCall, client, 0);
+}

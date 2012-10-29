@@ -686,3 +686,39 @@ stock Float:L4D2Direct_GetFlowDistance(client)
 
 	return Float:SDKCall(GetFlowDistanceSDKCall, client, 0);
 }
+
+/**
+ * Plays the specified animation for a player
+ *
+ * @note The event argument is NOT the same as the sequence numbers found in the model viewer
+ * @note You can get the number for your animation by looking at the disasm for virtual calls to DoAnimationEvent
+ * @param client
+ * @param event PlayerAnimEvent_t
+ * @noreturn
+ */
+stock L4D2Direct_DoAnimationEvent(client, event)
+{
+	if(client <= 0 || client > MaxClients+1)
+	{
+		return;
+	}
+	static Handle:DoAnimationEventSDKCall = INVALID_HANDLE;
+	if(DoAnimationEventSDKCall == INVALID_HANDLE)
+	{
+		StartPrepSDKCall(SDKCall_Player);
+		if(!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Virtual, "CTerrorPlayer::DoAnimationEvent"))
+		{
+			return;
+		}
+		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+		DoAnimationEventSDKCall = EndPrepSDKCall();
+		
+		if(DoAnimationEventSDKCall == INVALID_HANDLE)
+		{
+			return;
+		}
+	}
+	SDKCall(DoAnimationEventSDKCall, client, event, 0);
+}
+

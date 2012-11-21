@@ -378,8 +378,8 @@
 			
 			"CTerrorPlayer::m_iTankTickets"
 			{
-				"windows"	"12424"
-				"linux"		"12408"
+				"windows"	"12448"
+				"linux"		"12436"
 			}
 			
 			"CTerrorPlayer::m_iShovePenalty"

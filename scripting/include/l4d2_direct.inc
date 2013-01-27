@@ -565,6 +565,33 @@ stock L4D2Direct_SetNextShoveTime(client, Float:time)
 }
 
 /**
+ * Gets the maximum number of flames a CInferno is allowed to spawn.
+ *
+ * @param entity		Entity id
+ * @return				Number of flames or -1 on error
+ */
+stock L4D2Direct_GetInfernoMaxFlames(entity)
+{
+	new flames; 
+	if (GetEntityValueFromOffset(entity, "CInferno::m_maxFlames", NumberType_Int32, flames))
+		return flames;
+	
+	return -1;
+}
+
+/**
+ * Sets the maximum number of flames a CInferno is allowed to spawn.
+ *
+ * @param entity		Entity id
+ * @param flames		Number of flames
+ * @noreturn
+ */
+stock L4D2Direct_SetInfernoMaxFlames(entity, flames)
+{
+	SetEntityValueFromOffset(entity, "CInferno::m_maxFlames", NumberType_Int32, flames);
+}
+
+/**
  * Get the TerrorNavArea which holds a specific position.
  *
  * @note Some positions will not return a nav area (Address_Null). Notable examples are saferooms and small ledges like the guard rail at the start of c2m1_highway.

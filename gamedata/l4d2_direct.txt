@@ -35,12 +35,6 @@
 		"Offsets"
 		{
 			/* Virtual Table Offsets */
-			"CBaseEntity::GetBaseEntity"
-			{
-				"windows" 	"5"
-				"linux"		"6"
-			}
-
 			"CTerrorPlayer::DoAnimationEvent"
 			{
 				"windows"	"509"

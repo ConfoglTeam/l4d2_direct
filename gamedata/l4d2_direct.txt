@@ -410,9 +410,9 @@
 			/* Used solely to get the offset for TheDirector */
 			"DirectorMusicBanks_OnRoundStart"
 			{
-				"library"	"server"
-				"windows"       "\x83\xEC\x14\x57\x8B\xF9\x8B\x0D\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x84\xC0\x0F\x2A\x2A\x2A\x2A\x2A\x53\x55\x6A\x24\xE8"
-				/* 83 EC 14 57 8B F9 8B 0D ? ? ? ? E8 ? ? ? ? 84 C0 0F ? ? ? ? ? 53 55 6A 24 E8 */
+				"library"  "server"
+				"windows"  "\x55\x8B\xEC\x83\xEC\x2A\x56\x57\x8B\xF9\x8B\x0D\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x84"
+				/* 55 8B EC 83 EC ? 56 57 8B F9 8B 0D ? ? ? ? E8 ? ? ? ? 84 */
 			}
 			
 			/* Used solely to get the offset for TheNavMesh 
@@ -420,8 +420,8 @@
 			"CommandNavSave"
 			{
 				"library"	"server"
-				"windows"	"\xE8\x2A\x2A\x2A\x2A\x84\xC0\x74\x49\x8B\x0D\x2A\x2A\x2A\x2A\x8B\x01"
-				/* E8 ? ? ? ? 84 C0 74 49 8B 0D ? ? ? ? 8B 01 */
+				"windows"  "\xE8\x2A\x2A\x2A\x2A\x84\xC0\x74\x2A\x8B\x0D\x2A\x2A\x2A\x2A\x8B\x01\x8B\x50\x2A\xFF\xD2\x8B\x0D\x2A\x2A\x2A\x2A\x84\xC0"
+				/* E8 ? ? ? ? 84 C0 74 ? 8B 0D ? ? ? ? 8B 01 8B 50 ? FF D2 8B 0D ? ? ? ? 84 C0 */
 			}
 
 			/* Find the Director/ZombieManager singleton classes */
@@ -443,23 +443,33 @@
 				"library"	"server"
 				"windows"	"\x83\xEC\x10\x56\x8B\xF1\x83\x7E\x2A\x2A\x75\x2A\x33\xC0\x5E\x83\xC4\x10\xC2\x08"
 				/* 83 EC 10 56 8B F1 83 7E ? ? 75 ? 33 C0 5E 83 C4 10 C2 08 */
-				"linux"		"@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
+				"linux"    "@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
+			}
+
+			// find string " Highest survivor flow distance = %f  Tank at = %f witch at %f\n" in CDirectorVersusMode::UpdateVersusBossSpawning
+			// look for __RTDynamicCast which is called on the result of this function.
+			"CNavMesh::GetNavArea"
+			{
+				"library"  "server"
+				"linux"    "@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
+				"windows"  "\x55\x8B\xEC\x83\xEC\x2A\x83\x79\x2A\x00\x75\x08\x33\xC0\x8B\xE5\x5D\xC2\x08"
+				/* 55 8B EC 83 EC ? 83 79 ? 00 75 08 33 C0 8B E5 5D C2 08 */
 			}
 
 			"CDirector::TryOfferingTankBot"
 			{
-				"library"	"server"
-				"linux"		"@_ZN9CDirector18TryOfferingTankBotEP11CBaseEntityb"
-				"windows"	"\x51\x83\x7C\x24\x08\x00\x55\x8B\xE9\x0F\x84"
-				/* 51 83 7C 24 08 00 55 8B E9 0F 84  - No addresses-fairly unique call*/
+				"library"  "server"
+				"linux"    "@_ZN9CDirector18TryOfferingTankBotEP11CBaseEntityb"
+				"windows"  "\x55\x8B\xEC\x51\x83\x7D\x08\x00\x56\x8B\xF1\x89"
+				/* 55 8B EC 51 83 7D 08 0  56 8B F1 89 */
 			}
 
 			"CTerrorPlayer::GetFlowDistance"
 			{
-				"library"	"server"
-				"linux"		"@_ZNK13CTerrorPlayer15GetFlowDistanceEN13TerrorNavArea8FlowTypeE"
-				"windows"	"\x8B\x01\x8B\x90\x2A\x2A\x2A\x2A\xFF\xD2\x85\xC0\x74\x2A\x8B\x4C\x2A\x2A\xD9\x84"
-				/* 8B 01 8B 90 ? ? ? ? FF D2 85 C0 74 ? 8B 4C ? ? D9 84 */
+				"library"  "server"
+				"linux"    "@_ZNK13CTerrorPlayer15GetFlowDistanceEN13TerrorNavArea8FlowTypeE"
+				"windows"  "\x55\x8B\xEC\x8B\x01\x8B\x90\x2A\x2A\x2A\x2A\xFF\xD2\x85"
+				/* 55 8B EC 8B 01 8B 90 ? ? ? ? FF D2 85 */
 			}
 		}
 		

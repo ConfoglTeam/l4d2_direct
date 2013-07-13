@@ -406,8 +406,10 @@
 			
 			"CInferno::m_maxFlames"
 			{
-				"windows"	"2944"
-				"linux"		"2968"
+				"windows"	"2960"
+				"linux"		"2980"
+				// This offset is cmp'd against 64 at the start
+				// of CInferno::CreateFire. Look for 2 refs to "insect_swarm" in 1 func.
 			}
 		}
 		

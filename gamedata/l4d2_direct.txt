@@ -51,56 +51,56 @@
 
 			"CDirectorTacticalServices"
 			{
-				"windows"	"1424"
-				"linux"		"1444"
+				"windows"	"1384"
+				"linux"		"1384"
 			}
 
 			"CDirectorItemManager"
 			{
-				"windows"	"1428"
-				"linux"		"1448"
+				"windows"	"1388"
+				"linux"		"1388"
 			}
 
 			"CDirectorMusicBanks"
 			{
-				"windows"	"1432"
-				"linux"		"1452"
+				"windows"	"1392"
+				"linux"		"1392"
 			}
 
 			"CDirectorSessionManager"
 			{
-				"windows"	"1436"
-				"linux"		"1456"
+				"windows"	"1396"
+				"linux"		"1396"
 			}
 
 			"CDirectorScriptedEventManager"
 			{
-				"windows"	"1440"
-				"linux"		"1460"
+				"windows"	"1400"
+				"linux"		"1400"
 			}
 
 			"CDirectorVersusMode"
 			{
-				"windows" 	"1444"
-				"linux"		"1464"
+				"windows" 	"1404"
+				"linux"		"1404"
 			}
 
 			"CDirectorSurvivalMode"
 			{
-				"windows"	"1448"
-				"linux"		"1468"
+				"windows"	"1408"
+				"linux"		"1408"
 			}
 
 			"CDirectorScavengeMode"
 			{
-				"windows"	"1452"
-				"linux"		"1472"
+				"windows"	"1412"
+				"linux"		"1412"
 			}
 
 			"CDirectorChallengeMode"
 			{
-				"windows"	"1464"
-				"linux"		"1484"
+				"windows"	"1416"
+				"linux"		"1416"
 			}
 			
 			/* CDirector Variable Offsets */
@@ -137,20 +137,20 @@
 
 			"CDirector::m_fMobSpawnSize"
 			{
-				"windows"	"712"
-				"linux"		"712"
+				"windows"	"708"
+				"linux"		"708"
 			}
 
 			"CDirector::m_bIsFirstRoundFinished"
 			{
-				"windows"	"1121"
-				"linux"		"1121"
+				"windows"	"1161"
+				"linux"		"1161"
 			}
 
 			"CDirector::m_bIsSecondroundFinished"
 			{
-				"windows"	"1122"
-				"linux"		"1122"
+				"windows"	"1162"
+				"linux"		"1162"
 			}
 			
 			"CDirector::m_iTankPassedCount"
@@ -290,6 +290,7 @@
 			{
 				"windows"	"1528"
 				"linux"		"1524"
+				// Compared against inside of the current_flow_distance ccommand.
 			}
 			
 			/* Structure Sizes */
@@ -297,8 +298,8 @@
 			
 			"sizeof_CDirector"
 			{
-				"windows"	"1460"
-				"linux"		"1480"
+				"windows"	"1420"
+				"linux"		"1420"
 			}
 			
 			/* Google: sizeof empty */
@@ -328,8 +329,8 @@
 			
 			"sizeof_CDirectorScriptedEventManager"
 			{
-				"windows"	"156"
-				"linux"		"156"
+				"windows"	"340"
+				"linux"		"340"
 			}
 			
 			"sizeof_CDirectorVersusMode"
@@ -352,8 +353,8 @@
 			
 			"sizeof_CDirectorChallengeMode"
 			{
-				"windows"	"8"
-				"linux"		"8"
+				"windows"	"412"
+				"linux"		"412"
 			}
 			
 			"sizeof_TerrorNavMesh"
@@ -376,6 +377,8 @@
 				"linux"		"14860"
 			}
 			
+			// I have no idea what this variable is supposed to be so I'm skipping it!
+			// Offsets seem to have been wrong for some time.
 			"CTerrorPlayer::SpawnTimer"
 			{
 				"windows"	"11260"
@@ -384,26 +387,26 @@
 			
 			"CTerrorPlayer::InvulnerabilityTimer"
 			{
-				"windows"	"11900"
-				"linux"		"11888"
+				"windows"	"11924"
+				"linux"		"11904"
 			}	
 			
 			"CTerrorPlayer::m_iTankTickets"
 			{
-				"windows"	"12448"
-				"linux"		"12436"
+				"windows"	"12476"
+				"linux"		"12456"
 			}
 			
 			"CTerrorPlayer::m_iShovePenalty"
 			{
-				"windows"	"11512"
-				"linux"		"11500"
+				"windows"	"11536"
+				"linux"		"11516"
 			}
 			
 			"CTerrorPlayer::m_fNextShoveTime"
 			{
-				"windows"	"11508"
-				"linux"		"11496"
+				"windows"	"11532"
+				"linux"		"11512"
 			}
 			
 			/* TerrorNavArea Variable Offsets */
@@ -418,8 +421,10 @@
 			
 			"CInferno::m_maxFlames"
 			{
-				"windows"	"2944"
-				"linux"		"2968"
+				"windows"	"2960"
+				"linux"		"2980"
+				// This offset is cmp'd against 64 at the start
+				// of CInferno::CreateFire. Look for 2 refs to "insect_swarm" in 1 func.
 			}
 		}
 		
@@ -454,14 +459,6 @@
 			{
 				"library"	"server"
 				"linux"		"@TheNavMesh"
-			}
-
-			"CNavMesh::GetNavArea"
-			{
-				"library"	"server"
-				"windows"	"\x83\xEC\x10\x56\x8B\xF1\x83\x7E\x2A\x2A\x75\x2A\x33\xC0\x5E\x83\xC4\x10\xC2\x08"
-				/* 83 EC 10 56 8B F1 83 7E ? ? 75 ? 33 C0 5E 83 C4 10 C2 08 */
-				"linux"    "@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
 			}
 
 			// find string " Highest survivor flow distance = %f  Tank at = %f witch at %f\n" in CDirectorVersusMode::UpdateVersusBossSpawning

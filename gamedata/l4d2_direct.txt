@@ -290,6 +290,7 @@
 			{
 				"windows"	"1528"
 				"linux"		"1524"
+				// Compared against inside of the current_flow_distance ccommand.
 			}
 			
 			/* Structure Sizes */
@@ -364,6 +365,8 @@
 			
 			/* CTerrorPlayer Variable Offsets */
 			
+			// I have no idea what this variable is supposed to be so I'm skipping it!
+			// Offsets seem to have been wrong for some time.
 			"CTerrorPlayer::SpawnTimer"
 			{
 				"windows"	"11260"
@@ -372,26 +375,26 @@
 			
 			"CTerrorPlayer::InvulnerabilityTimer"
 			{
-				"windows"	"11900"
-				"linux"		"11888"
+				"windows"	"11924"
+				"linux"		"11904"
 			}	
 			
 			"CTerrorPlayer::m_iTankTickets"
 			{
-				"windows"	"12448"
-				"linux"		"12436"
+				"windows"	"12476"
+				"linux"		"12456"
 			}
 			
 			"CTerrorPlayer::m_iShovePenalty"
 			{
-				"windows"	"11512"
-				"linux"		"11500"
+				"windows"	"11536"
+				"linux"		"11516"
 			}
 			
 			"CTerrorPlayer::m_fNextShoveTime"
 			{
-				"windows"	"11508"
-				"linux"		"11496"
+				"windows"	"11532"
+				"linux"		"11512"
 			}
 			
 			/* TerrorNavArea Variable Offsets */
@@ -444,14 +447,6 @@
 			{
 				"library"	"server"
 				"linux"		"@TheNavMesh"
-			}
-
-			"CNavMesh::GetNavArea"
-			{
-				"library"	"server"
-				"windows"	"\x83\xEC\x10\x56\x8B\xF1\x83\x7E\x2A\x2A\x75\x2A\x33\xC0\x5E\x83\xC4\x10\xC2\x08"
-				/* 83 EC 10 56 8B F1 83 7E ? ? 75 ? 33 C0 5E 83 C4 10 C2 08 */
-				"linux"    "@_ZNK8CNavMesh10GetNavAreaERK6Vectorf"
 			}
 
 			// find string " Highest survivor flow distance = %f  Tank at = %f witch at %f\n" in CDirectorVersusMode::UpdateVersusBossSpawning

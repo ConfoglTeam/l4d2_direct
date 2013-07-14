@@ -602,7 +602,7 @@ stock L4D2Direct_SetPreIncapHealth(client, health)
  * @param client		Client id
  * @return				Temporary health before incapacitation
  */
-stock L4D2Direct_GetPreIncapHealth(client)
+stock L4D2Direct_GetPreIncapHealthBuffer(client)
 {
 	if (client < 1 || client > MaxClients)
 		return;
@@ -618,7 +618,7 @@ stock L4D2Direct_GetPreIncapHealth(client)
  * @param health		New pre-incap temporary health
  * @noreturn
  */
-stock L4D2Direct_SetPreIncapHealth(client, health)
+stock L4D2Direct_SetPreIncapHealthBuffer(client, health)
 {
 	if (client < 1 || client > MaxClients)
 		return;

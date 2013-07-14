@@ -565,6 +565,68 @@ stock L4D2Direct_SetNextShoveTime(client, Float:time)
 }
 
 /**
+ * Gets the health of the survivor from before they were incapacitated
+ *
+ * @note This may only apply to hanging players
+ * @param client		Client id
+ * @return				Real health before incapacitation
+ */
+stock L4D2Direct_GetPreIncapHealth(client)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+
+	return GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealth", NumberType_Int32);
+}
+
+/**
+ * Sets the health of the survivor from before they were incapacitated
+ *
+ * @note This may only apply to hanging players
+ * @param client		Client id
+ * @param health		New pre-incap health
+ * @noreturn
+ */
+stock L4D2Direct_SetPreIncapHealth(client, health)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealth", NumberType_Int32, health);
+}
+
+/**
+ * Gets the temporary health of the survivor from before they were incapacitated
+ *
+ * @note This may only apply to hanging players
+ * @param client		Client id
+ * @return				Temporary health before incapacitation
+ */
+stock L4D2Direct_GetPreIncapHealth(client)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+
+	return GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealthBuffer", NumberType_Int32);
+}
+
+/**
+ * Sets the health of the survivor from before they were incapacitated
+ *
+ * @note This may only apply to hanging players
+ * @param client		Client id
+ * @param health		New pre-incap temporary health
+ * @noreturn
+ */
+stock L4D2Direct_SetPreIncapHealth(client, health)
+{
+	if (client < 1 || client > MaxClients)
+		return;
+
+	SetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealthBuffer", NumberType_Int32, health);
+}
+
+/**
  * Gets the maximum number of flames a CInferno is allowed to spawn.
  *
  * @param entity		Entity id

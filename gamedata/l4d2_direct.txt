@@ -9,7 +9,7 @@
 				"windows"
 				{
 					"signature" "DirectorMusicBanks_OnRoundStart"
-					"read" "8"
+					"read" "12"
 				}
 				"linux"
 				{

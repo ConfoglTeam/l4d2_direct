@@ -371,12 +371,10 @@
 				"linux"		"14860"
 			}
 			
-			// I have no idea what this variable is supposed to be so I'm skipping it!
-			// Offsets seem to have been wrong for some time.
 			"CTerrorPlayer::SpawnTimer"
 			{
-				"windows"	"11260"
-				"linux"		"11244"
+				"windows"	"11308"
+				"linux"		"11288"
 			}
 			
 			"CTerrorPlayer::InvulnerabilityTimer"

@@ -574,9 +574,11 @@ stock L4D2Direct_SetNextShoveTime(client, Float:time)
 stock L4D2Direct_GetPreIncapHealth(client)
 {
 	if (client < 1 || client > MaxClients)
-		return;
+		return -1;
 
-	return GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealth", NumberType_Int32);
+	decl value;
+	if (!GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealth", NumberType_Int32, value)) value = -1;
+	return value;
 }
 
 /**
@@ -605,9 +607,11 @@ stock L4D2Direct_SetPreIncapHealth(client, health)
 stock L4D2Direct_GetPreIncapHealthBuffer(client)
 {
 	if (client < 1 || client > MaxClients)
-		return;
+		return -1;
 
-	return GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealthBuffer", NumberType_Int32);
+	decl value;
+	if (!GetEntityValueFromOffset(client, "CTerrorPlayer::m_preIncapacitatedHealthBuffer", NumberType_Int32, value)) value = -1;
+	return value;
 }
 
 /**

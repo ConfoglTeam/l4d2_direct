@@ -256,37 +256,6 @@ stock Address:L4D2Direct_GetMapMaxFlowDistanceAddr()
 }
 
 /**
- * Gets the address of an entity to allow getting/setting data directly with offsets
- *
- * @param entity
- * @return Address of entity or Address_Null on failure
- */
-stock Address:GetEntityAddress(entity)
-{
-	if(!IsValidEntity(entity))
-	{
-		return Address_Null;
-	}
-	static Handle:GetBaseEntitySDKCall = INVALID_HANDLE;
-	if(GetBaseEntitySDKCall == INVALID_HANDLE)
-	{
-		StartPrepSDKCall(SDKCall_Entity);
-		if(!PrepSDKCall_SetFromConf(L4D2Direct_GetGameConf(), SDKConf_Virtual, "CBaseEntity::GetBaseEntity"))
-		{
-			return Address_Null;
-		}
-		PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
-		GetBaseEntitySDKCall = EndPrepSDKCall();
-		
-		if(GetBaseEntitySDKCall == INVALID_HANDLE)
-		{
-			return Address_Null;
-		}
-	}
-	return Address:SDKCall(GetBaseEntitySDKCall, entity);
-}
-
-/**
  * Gets entity data at a given offset
  *
  * @param entity
